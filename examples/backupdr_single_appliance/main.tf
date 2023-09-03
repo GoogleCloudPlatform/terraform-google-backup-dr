@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-output "ms_console" {
-  value = google_backup_dr_management_server.server.management_uri[0].web_ui
+## create backupdr backup/recovery appliance
+module "appliance" {
+  source                     = "../.."
+  assign_roles_to_ba_sa      = true
+  ba_prefix                  = var.ba_name
+  management_server_endpoint = var.management_server_endpoint
+  create_serviceaccount      = true
+  host_project_id            = var.project
+  network                    = var.network
+  project_id                 = var.project
+  region                     = var.region
+  subnet                     = var.subnet
+  zone                       = var.zone
+  require_registration       = true
 }
 
-output "appliance" {
-  value = module.appliance
-}

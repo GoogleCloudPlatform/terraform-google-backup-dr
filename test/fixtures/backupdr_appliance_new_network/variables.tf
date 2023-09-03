@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-output "ms_console" {
-  value = google_backup_dr_management_server.server.management_uri[0].web_ui
-}
-
-output "appliance" {
-  value = module.appliance
+variable "project" {
+  type = string
 }

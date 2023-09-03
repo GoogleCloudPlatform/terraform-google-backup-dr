@@ -22,21 +22,12 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| ba\_name | provide backup appliance server name | `string` | n/a | yes |
-| mc\_name | provide management server name | `string` | `"ms-console"` | no |
-| mc\_peering\_mode | specify peering mode for management server | `string` | `"PRIVATE_SERVICE_ACCESS"` | no |
-| mc\_type | provide management server type | `string` | `"BACKUP_RESTORE"` | no |
-| network | provide gcp network | `string` | n/a | yes |
-| project | provide project id | `string` | n/a | yes |
-| region | provide gcp region | `string` | n/a | yes |
-| subnet | provide gcp subnetwork | `string` | n/a | yes |
-| zone | provide gcp zone | `string` | n/a | yes |
+| appliances | map of appliances with properties | <pre>map(object({<br>    host_project_id            = string<br>    project_id                 = string<br>    management_server_endpoint = string<br>    network                    = string<br>    subnet                     = string<br>    region                     = string<br>    zone                       = string<br>    require_registration       = bool<br>  }))</pre> | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| appliance | n/a |
-| ms\_console | n/a |
+| appliances | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -87,11 +87,6 @@ variable "primary_pool_disk_size" {
   default = 200
 }
 
-variable "image_path" {
-  type    = string
-  default = "projects/backupdr-images/global/images/sky-11-0-5-447"
-}
-
 variable "machine_type" {
   type    = string
   default = "e2-standard-16"
@@ -111,6 +106,12 @@ variable "vm_tags" {
   type        = list(string)
   description = "Tags for VMs"
   default     = []
+}
+
+variable "labels" {
+  type        = map(string)
+  description = "A set of key/value label pairs to assign to the resources deployed."
+  default     = {}
 }
 
 variable "create_serviceaccount" {

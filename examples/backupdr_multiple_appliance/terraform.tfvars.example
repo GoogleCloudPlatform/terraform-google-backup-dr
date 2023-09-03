@@ -1,0 +1,32 @@
+appliances = {
+  "backup-appliance-001" = {
+    host_project_id            = "gcp-project-id"
+    project_id                 = "gcp-project-id"
+    management_server_endpoint = "https://<api>/actifio"
+    network                    = "default"
+    subnet                     = "default"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    require_registration       = true
+  },
+  "backup-appliance-002" = {
+    host_project_id            = "gcp-project-id"
+    project_id                 = "gcp-project-id"
+    management_server_endpoint = "https://<api>/actifio"
+    network                    = "default"
+    subnet                     = "default"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    require_registration       = true
+  },
+  "recovery-appliance-001" = {
+    host_project_id            = "gcp-project-id"
+    project_id                 = "gcp-project-id"
+    management_server_endpoint = "https://<api>/actifio"
+    network                    = "default"
+    subnet                     = "default"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    require_registration       = true
+  }
+}

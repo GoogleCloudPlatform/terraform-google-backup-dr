@@ -31,11 +31,11 @@ resource "google_backup_dr_management_server" "server" {
 }
 
 ## create backupdr backup appliance
-module "ba_appliance" {
+module "appliance" {
   source                     = "../.."
   assign_roles_to_ba_sa      = true
   ba_prefix                  = var.ba_name
-  management_server_endpoint = google_backup_dr_management_server.server.management_uri.0.api
+  management_server_endpoint = google_backup_dr_management_server.server.management_uri[0].api
   create_serviceaccount      = true
   host_project_id            = var.project
   network                    = var.network
@@ -43,7 +43,7 @@ module "ba_appliance" {
   region                     = var.region
   subnet                     = var.subnet
   zone                       = var.zone
-  require_registration       = false
+  require_registration       = true
   depends_on                 = [google_backup_dr_management_server.server]
 }
 

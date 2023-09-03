@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-output "ms_console" {
-  value = google_backup_dr_management_server.server.management_uri.0.web_ui
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 4.80.0"
+    }
+  }
+  required_version = ">= 0.13"
 }
-

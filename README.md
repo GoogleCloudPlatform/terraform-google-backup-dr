@@ -2,45 +2,42 @@
 
 ## Description
 ### Tagline
-This is an auto-generated module.
+Terraform module for Google BackupDR components
 
 ### Detailed
-This module was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template/), which by default generates a module that simply creates a GCS bucket. As the module develops, this README should be updated.
+The terraform-google-cloud-backup-dr module will help users to provision the backup/recovery appliances for their projects and integrate that with the Backup DR management console. Using this module now users can automate the  prerequisites  of having a backup/recovery appliance in place required for using Google Backup DR management console.
+
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a GCS bucket with the provided name
+- Create backup/recovery appliance for backupDR in given GCP projects
 
 ### PreDeploy
 To deploy this blueprint you must have an active billing account and billing permissions.
 
-## Architecture
-![alt text for diagram](https://www.link-to-architecture-diagram.com)
-1. Architecture description step no. 1
-2. Architecture description step no. 2
-3. Architecture description step no. N
-
 ## Documentation
-- [Hosting a Static Website](https://cloud.google.com/storage/docs/hosting-static-website)
+- [Backup/Recovery Appliance Concepts](https://cloud.google.com/backup-disaster-recovery/docs/concepts/manage-appliance)
 
-## Deployment Duration
-Configuration: X mins
-Deployment: Y mins
-
-## Cost
-[Blueprint cost details](https://cloud.google.com/products/calculator?id=02fb0c45-cc29-4567-8cc6-f72ac9024add)
 
 ## Usage
-
 Basic usage of this module is as follows:
 
 ```hcl
-module "backup_dr" {
+module "backup_dr_appliance" {
   source  = "terraform-google-modules/backup-dr/google"
   version = "~> 0.1"
 
-  project_id  = "<PROJECT ID>"
-  bucket_name = "gcs-test-bucket"
+  assign_roles_to_ba_sa      = true
+  ba_prefix                  = var.ba_name
+  management_server_endpoint = var.mgmt_api
+  create_serviceaccount      = true
+  host_project_id            = var.project
+  network                    = var.network
+  project_id                 = var.project
+  region                     = var.region
+  subnet                     = var.subnet
+  zone                       = var.zone
+  require_registration       = true
 }
 ```
 
@@ -52,14 +49,41 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| bucket\_name | The name of the bucket to create | `string` | n/a | yes |
-| project\_id | The project ID to deploy to | `string` | n/a | yes |
+| assign\_roles\_to\_ba\_sa | assign roles to the BA service account | `bool` | n/a | yes |
+| ba\_prefix | n/a | `string` | n/a | yes |
+| ba\_roles | n/a | `list(string)` | <pre>[<br>  "roles/backupdr.computeEngineOperator",<br>  "roles/logging.logWriter",<br>  "roles/iam.serviceAccountUser"<br>]</pre> | no |
+| ba\_service\_account | BA service account | `string` | `"none"` | no |
+| boot\_disk\_size | n/a | `number` | `200` | no |
+| boot\_disk\_type | n/a | `string` | `"pd-ssd"` | no |
+| boot\_image | n/a | `string` | `"projects/backupdr-images/global/images/sky-11-0-5-447"` | no |
+| create\_serviceaccount | create BA service account | `bool` | n/a | yes |
+| enable\_services | n/a | `list(string)` | <pre>[<br>  "cloudkms.googleapis.com",<br>  "cloudresourcemanager.googleapis.com",<br>  "compute.googleapis.com",<br>  "iam.googleapis.com",<br>  "logging.googleapis.com"<br>]</pre> | no |
+| host\_project\_id | n/a | `string` | n/a | yes |
+| key\_ring\_roles | n/a | `list(string)` | <pre>[<br>  "roles/cloudkms.cryptoKeyEncrypterDecrypter",<br>  "roles/cloudkms.admin"<br>]</pre> | no |
+| labels | A set of key/value label pairs to assign to the resources deployed. | `map(string)` | `{}` | no |
+| machine\_type | n/a | `string` | `"e2-standard-16"` | no |
+| management\_server\_endpoint | n/a | `string` | n/a | yes |
+| network | n/a | `string` | `"default"` | no |
+| primary\_pool\_disk\_size | n/a | `number` | `200` | no |
+| project\_id | n/a | `string` | n/a | yes |
+| region | n/a | `string` | n/a | yes |
+| require\_registration | n/a | `string` | `"true"` | no |
+| snap\_pool\_disk\_size | n/a | `number` | `4096` | no |
+| source\_ranges | n/a | `list(string)` | `[]` | no |
+| subnet | n/a | `string` | n/a | yes |
+| vm\_tags | Tags for VMs | `list(string)` | `[]` | no |
+| zone | n/a | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| bucket\_name | Name of the bucket |
+| ba\_service\_account | BA Appliance service account |
+| bucket\_prefix | GCE VM instance backup metadata in bucket |
+| instance\_ip\_addr | The private IP address of the BA Appliance. |
+| vm\_name | Name of the vm appliance. |
+| vm\_project\_id | Project where BA is deployed |
+| vm\_zone | Zone where the vm appliance deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -74,36 +98,20 @@ The following dependencies must be available:
 - [Terraform][terraform] v0.13
 - [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.0
 
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-- Storage Admin: `roles/storage.admin`
-
-The [Project Factory module][project-factory-module] and the
-[IAM module][iam-module] may be used in combination to provision a
-service account with the necessary roles applied.
-
 ### APIs
 
-A project with the following APIs enabled must be used to host the
-resources of this module:
+The terraform module will take care of enabling the required APIs to function the terraform module.
 
-- Google Cloud Storage JSON API: `storage-api.googleapis.com`
-
-The [Project Factory module][project-factory-module] can be used to
-provision a project with the necessary APIs enabled.
+- Google Cloud Compute JSON API: `compute.googleapis.com`
+- Google Cloud Resource Manager JSON API: `cloudresourcemanager.googleapis.com`
+- Google Cloud KMS JSON API: `cloudkms.googleapis.com`
+- Google Cloud IAM JSON API: `iam.googleapis.com`
+- Google Cloud Logging JSON API: `logging.googleapis.com`
 
 ## Contributing
 
 Refer to the [contribution guidelines](./CONTRIBUTING.md) for
 information on contributing to this module.
-
-[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
-[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
-[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
-[terraform]: https://www.terraform.io/downloads.html
 
 ## Security Disclosures
 

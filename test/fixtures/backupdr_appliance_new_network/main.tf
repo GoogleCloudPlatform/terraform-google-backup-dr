@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-output "ms_console" {
-  value = google_backup_dr_management_server.server.management_uri[0].web_ui
+## create backupdr backup appliance
+module "backupdr_appliance_new_network" {
+  source  = "../../../examples/backupdr_appliance_new_network"
+  ba_name = "sky-appliance-10003"
+  project = var.project
+  region  = "us-central1"
+  zone    = "us-central1-a"
 }
 
-output "appliance" {
-  value = module.appliance
-}
+

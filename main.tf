@@ -31,7 +31,7 @@ locals {
 }
 
 locals {
-  ba_service_account = var.create_serviceaccount ? join("", google_service_account.ba_service_account.*.email) : var.ba_service_account
+  ba_service_account = var.create_serviceaccount ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
   bucket_prefix      = join("-", tolist([var.ba_prefix, random_id.id.hex]))
 }
 
@@ -88,6 +88,7 @@ resource "google_kms_crypto_key" "kek" {
   name            = "kek"
   purpose         = "ENCRYPT_DECRYPT"
   rotation_period = "7776000s"
+  labels          = var.labels
   version_template {
     algorithm        = "GOOGLE_SYMMETRIC_ENCRYPTION"
     protection_level = "SOFTWARE"
@@ -126,6 +127,7 @@ resource "google_compute_disk" "boot_disk" {
   size                      = var.boot_disk_size
   type                      = var.boot_disk_type
   zone                      = var.zone
+  labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 resource "google_compute_disk" "ba_snapshot_pool" {
@@ -135,6 +137,7 @@ resource "google_compute_disk" "ba_snapshot_pool" {
   size                      = var.snap_pool_disk_size
   type                      = var.boot_disk_type
   zone                      = var.zone
+  labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 
@@ -145,24 +148,25 @@ resource "google_compute_disk" "ba_primary_pool" {
   size                      = var.primary_pool_disk_size
   type                      = var.boot_disk_type
   zone                      = var.zone
+  labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 
 resource "google_compute_attached_disk" "primary-pool" {
   project     = var.project_id
   disk        = google_compute_disk.ba_primary_pool.id
-  instance    = google_compute_instance.ba_instance.id
+  instance    = google_compute_instance.appliance.id
   device_name = "primary-pool"
 }
 
 resource "google_compute_attached_disk" "snapshot-pool" {
   project     = var.project_id
   disk        = google_compute_disk.ba_snapshot_pool.id
-  instance    = google_compute_instance.ba_instance.id
+  instance    = google_compute_instance.appliance.id
   device_name = "snapshot-pool"
 }
 
-resource "google_compute_instance" "ba_instance" {
+resource "google_compute_instance" "appliance" {
   project = var.project_id
   boot_disk {
     auto_delete = true
@@ -192,13 +196,14 @@ resource "google_compute_instance" "ba_instance" {
     enable_secure_boot          = true
     enable_vtpm                 = true
   }
-  zone       = var.zone
-  depends_on = [google_project_service.enable_services]
+  zone = var.zone
   lifecycle {
     ignore_changes = [attached_disk, metadata]
   }
+  labels     = var.labels
+  tags       = var.vm_tags
+  depends_on = [google_project_service.enable_services]
 
-  tags = var.vm_tags
 }
 
 # create firewall for the MC to communicate with BA applaince.
@@ -237,6 +242,7 @@ data "http" "actifio_session" {
       error_message = "Actifio Session status code invalid"
     }
   }
+  depends_on = [google_compute_instance.appliance]
 }
 
 data "http" "actifio_register" {
@@ -250,7 +256,7 @@ data "http" "actifio_register" {
   }
 
   request_body = jsonencode({
-    "ipaddress"     = google_compute_instance.ba_instance.network_interface.0.network_ip
+    "ipaddress"     = google_compute_instance.appliance.network_interface[0].network_ip
     "shared_secret" = local.shared_secret
   })
 

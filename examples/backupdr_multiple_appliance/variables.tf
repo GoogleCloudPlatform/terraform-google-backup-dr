@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-output "ms_console" {
-  value = google_backup_dr_management_server.server.management_uri[0].web_ui
-}
-
-output "appliance" {
-  value = module.appliance
+variable "appliances" {
+  type = map(object({
+    host_project_id            = string
+    project_id                 = string
+    management_server_endpoint = string
+    network                    = string
+    subnet                     = string
+    region                     = string
+    zone                       = string
+    require_registration       = bool
+  }))
+  default     = {}
+  description = "map of appliances with properties"
 }

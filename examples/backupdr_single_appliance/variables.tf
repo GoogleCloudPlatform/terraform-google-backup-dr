@@ -13,44 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 variable "project" {
-  type = string
+  type        = string
+  description = "provide project id"
 }
 
 variable "region" {
-  type = string
+  type        = string
+  description = "provide gcp region"
 }
 
 variable "zone" {
-  type = string
+  type        = string
+  description = "provide gcp zone"
 }
 
 variable "network" {
-  type = string
+  type        = string
+  description = "provide gcp network"
 }
 
 variable "subnet" {
-  type = string
+  type        = string
+  description = "provide gcp subnetwork"
 }
 
-variable "subnet_cidr" {
-  type = string
-}
-
-
-variable "mc_peering_mode" {
-  type = string
-}
-
-variable "mc_name" {
-  type = string
-}
-
-variable "mc_type" {
-  type = string
+variable "management_server_endpoint" {
+  type        = string
+  description = "specify endpoint url for management server"
 }
 
 variable "ba_name" {
-  type = string
+  type        = string
+  description = "provide backup appliance server name"
 }

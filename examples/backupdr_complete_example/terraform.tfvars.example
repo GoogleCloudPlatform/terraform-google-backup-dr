@@ -1,0 +1,32 @@
+# common vars
+project = "budr-tf-provider-test"
+region  = "us-central1"
+zone    = "us-central1-a"
+
+## network vars
+network     = "customnetwork"
+subnet      = "cusomt-subnet"
+subnet_cidr = "10.20.0.0/16"
+
+## MC vars
+mc_name         = "ms-console-custom"
+mc_type         = "BACKUP_RESTORE"
+mc_peering_mode = "PRIVATE_SERVICE_ACCESS"
+
+## appliance vars
+appliances = {
+  "backup-appliance-001" = {
+    host_project_id      = "budr-tf-provider-test"
+    project_id           = "budr-tf-provider-test"
+    region               = "us-central1"
+    zone                 = "us-central1-a"
+    require_registration = true
+  },
+  "recovery-appliance-001" = {
+    host_project_id      = "budr-tf-provider-test"
+    project_id           = "budr-tf-provider-test"
+    region               = "us-central1"
+    zone                 = "us-central1-a"
+    require_registration = true
+  }
+}

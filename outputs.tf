@@ -15,7 +15,7 @@
  */
 
 output "instance_ip_addr" {
-  value       = google_compute_instance.ba_instance.network_interface.0.network_ip
+  value       = google_compute_instance.appliance.network_interface[0].network_ip
   description = "The private IP address of the BA Appliance."
 }
 
@@ -30,12 +30,12 @@ output "ba_service_account" {
 }
 
 output "vm_zone" {
-  value       = google_compute_instance.ba_instance.zone
+  value       = google_compute_instance.appliance.zone
   description = "Zone where the vm appliance deployed."
 }
 
 output "vm_name" {
-  value       = google_compute_instance.ba_instance.name
+  value       = google_compute_instance.appliance.name
   description = "Name of the vm appliance."
 }
 

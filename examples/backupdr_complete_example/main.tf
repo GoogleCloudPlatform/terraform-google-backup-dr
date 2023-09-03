@@ -16,14 +16,16 @@
 
 resource "google_compute_network" "network" {
   name                    = var.network
+  project                 = var.project
   auto_create_subnetworks = false
 }
 
 resource "google_compute_global_address" "private_ip_address" {
-  name          = "global-psconnect-ip"
+  name          = "global-psconnect-ip-${var.network}"
   address_type  = "INTERNAL"
   purpose       = "VPC_PEERING"
   prefix_length = 20
+  project       = var.project
   network       = google_compute_network.network.id
 }
 
@@ -34,9 +36,12 @@ resource "google_service_networking_connection" "default" {
 }
 
 resource "google_backup_dr_management_server" "server" {
+  provider = google-beta
   location = var.region
-  name     = var.mc_name
-  type     = var.mc_type
+  project  = var.project
+
+  name = var.mc_name
+  type = var.mc_type
   networks {
     network      = google_compute_network.network.id
     peering_mode = var.mc_peering_mode
@@ -49,22 +54,24 @@ resource "google_compute_subnetwork" "subnet" {
   name                     = var.subnet
   ip_cidr_range            = var.subnet_cidr
   region                   = var.region
+  project                  = var.project
   network                  = google_compute_network.network.id
   private_ip_google_access = true
 }
 
-module "ba_appliance" {
+module "appliances" {
+  for_each                   = try(var.appliances, {})
   source                     = "../.."
-  assign_roles_to_ba_sa      = true
-  ba_prefix                  = var.ba_name
-  management_server_endpoint = google_backup_dr_management_server.server.management_uri.0.api
   create_serviceaccount      = true
-  host_project_id            = var.project
+  assign_roles_to_ba_sa      = true
+  ba_prefix                  = each.key
+  management_server_endpoint = google_backup_dr_management_server.server.management_uri[0].api
+  host_project_id            = each.value.host_project_id
   network                    = google_compute_network.network.name
-  project_id                 = var.project
-  region                     = var.region
+  project_id                 = each.value.project_id
+  region                     = each.value.region
   subnet                     = google_compute_subnetwork.subnet.name
-  zone                       = var.zone
+  zone                       = each.value.zone
   depends_on                 = [google_backup_dr_management_server.server]
 }
 

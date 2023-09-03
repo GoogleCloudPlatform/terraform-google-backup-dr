@@ -23,9 +23,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | ba\_name | provide backup appliance server name | `string` | n/a | yes |
-| mc\_name | provide management server name | `string` | `"ms-console"` | no |
-| mc\_peering\_mode | specify peering mode for management server | `string` | `"PRIVATE_SERVICE_ACCESS"` | no |
-| mc\_type | provide management server type | `string` | `"BACKUP_RESTORE"` | no |
+| management\_server\_endpoint | specify endpoint url for management server | `string` | n/a | yes |
 | network | provide gcp network | `string` | n/a | yes |
 | project | provide project id | `string` | n/a | yes |
 | region | provide gcp region | `string` | n/a | yes |
@@ -37,6 +35,5 @@
 | Name | Description |
 |------|-------------|
 | appliance | n/a |
-| ms\_console | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
