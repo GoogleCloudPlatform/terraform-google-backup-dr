@@ -14,97 +14,67 @@
  * limitations under the License.
  */
 
-variable "project_id" {
+variable "ba_project_id" {
   type = string
+  description = "provide the project id"
 }
 
-variable "host_project_id" {
+variable "vpc_host_project_id" {
   type = string
+  description = "provide the vpc host project id"
 }
 
-variable "ba_prefix" {
+variable "ba_name" {
   type = string
+  description = "provide the BA name (random 4 char will be added as suffix)"
 }
 
-variable "source_ranges" {
+variable "firewall_source_ip_ranges" {
   type    = list(string)
   default = []
+  description = "provide the IP ranges that needs to be allowed for appliance to reach management server"
 }
 
-variable "require_registration" {
+variable "ba_registration" {
   type    = string
   default = "true"
+  description = "toggle flag to run appliance register API call. We recommended to make it false, once appliance is successfully registered."
 }
 
 variable "region" {
   type = string
+  description = "provide gcp region"
 }
 
 variable "zone" {
   type = string
+  description = "provide gcp zone"
 }
 
 variable "network" {
   type    = string
-  default = "default"
+    description = "provide gcp network"
 }
 
 variable "subnet" {
   type = string
+      description = "provide gcp subnet"
 }
 
 variable "management_server_endpoint" {
   type = string
-}
-
-variable "enable_services" {
-  type    = list(string)
-  default = ["cloudkms.googleapis.com", "cloudresourcemanager.googleapis.com", "compute.googleapis.com", "iam.googleapis.com", "logging.googleapis.com"]
+      description = "provide management server API endpoint URL ex. https://uri/actifio"
 }
 
 variable "boot_image" {
   type    = string
   default = "projects/backupdr-images/global/images/sky-11-0-5-447"
-}
-
-variable "boot_disk_type" {
-  type    = string
-  default = "pd-ssd"
-}
-
-variable "boot_disk_size" {
-  type    = number
-  default = 200
-}
-
-variable "snap_pool_disk_size" {
-  type    = number
-  default = 4096
-}
-
-variable "primary_pool_disk_size" {
-  type    = number
-  default = 200
-}
-
-variable "machine_type" {
-  type    = string
-  default = "e2-standard-16"
-}
-
-variable "ba_roles" {
-  type    = list(string)
-  default = ["roles/backupdr.computeEngineOperator", "roles/logging.logWriter", "roles/iam.serviceAccountUser"]
-}
-
-variable "key_ring_roles" {
-  type    = list(string)
-  default = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/cloudkms.admin"]
+  description = "provide the base boot image for appliance. Dont modify for update/upgrade, refer management server console"
 }
 
 variable "vm_tags" {
   type        = list(string)
-  description = "Tags for VMs"
+  description = "Tags for appliance VM"
   default     = []
 }
 
@@ -114,7 +84,7 @@ variable "labels" {
   default     = {}
 }
 
-variable "create_serviceaccount" {
+variable "create_ba_service_account" {
   type        = bool
   description = "create BA service account"
 }
@@ -126,6 +96,15 @@ variable "assign_roles_to_ba_sa" {
 
 variable "ba_service_account" {
   type        = string
-  description = "BA service account"
+  description = "provide existing BA service account name"
   default     = "none"
+}
+
+variable "ba_appliance_type" {
+  type = string
+  description = "provide BA appliance type"
+  validation {
+    condition = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS","BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL","BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD","BASIC_FOR_DATABASES_VMWARE_VMS_SSD"], var.ba_appliance_type)
+    error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL, BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD, BASIC_FOR_DATABASES_VMWARE_VMS_SSD, STANDARD_FOR_DATABASES_VMWARE_VMS."
+  }
 }

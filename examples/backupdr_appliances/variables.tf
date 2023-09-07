@@ -14,52 +14,6 @@
  * limitations under the License.
  */
 
-variable "project" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "zone" {
-  type = string
-}
-
-variable "network" {
-  type    = string
-  default = "custom-network"
-}
-
-variable "subnet" {
-  type    = string
-  default = "custom-network"
-}
-
-variable "subnet_cidr" {
-  type    = string
-  default = "10.20.0.0/16"
-}
-
-
-variable "mc_peering_mode" {
-  type        = string
-  description = "specify peering mode for management server"
-  default     = "PRIVATE_SERVICE_ACCESS"
-}
-
-variable "mc_name" {
-  type        = string
-  description = "provide management server name"
-  default     = "ms-console"
-}
-
-variable "mc_type" {
-  type        = string
-  description = "provide management server type"
-  default     = "BACKUP_RESTORE"
-}
-
 variable "appliances" {
   type = map(object({
     management_server_endpoint = optional(string)

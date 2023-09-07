@@ -1,0 +1,56 @@
+appliances = {
+  "dev-appliance001" = {
+    vpc_host_project_id        = "gcp-project-id"
+    ba_project_id              = "gcp-project-id"
+    network                    = "custom-network"
+    subnet                     = "custom-subnet"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    ba_appliance_type          = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
+    boot_image                 = "projects/backupdr-images/global/images/sky-11-0-5-447"
+    create_ba_service_account  = true
+    assign_roles_to_ba_sa      = true
+    ba_service_account         = "none"
+    labels                     = { "managed-by" = "terraform"}
+    vm_tags                    = []
+    firewall_source_ip_ranges  = []
+    ba_registration            = true
+    management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
+  },
+  "staging-appliance002" = {
+    vpc_host_project_id        = "gcp-project-id"
+    ba_project_id              = "gcp-project-id"
+    network                    = "custom-network"
+    subnet                     = "custom-subnet"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    ba_appliance_type          = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
+    boot_image                 = "projects/backupdr-images/global/images/sky-11-0-5-447"
+    create_ba_service_account  = true
+    assign_roles_to_ba_sa      = true
+    ba_service_account         = "none"
+    labels                     = { "managed-by" = "terraform"}
+    vm_tags                    = []
+    firewall_source_ip_ranges  = []
+    ba_registration            = true
+    management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
+  },
+  "production-appliance003" = {
+    vpc_host_project_id        = "gcp-project-id"
+    ba_project_id              = "gcp-project-id"
+    network                    = "custom-network"
+    subnet                     = "custom-subnet"
+    region                     = "us-central1"
+    zone                       = "us-central1-a"
+    ba_appliance_type          = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
+    boot_image                 = "projects/backupdr-images/global/images/sky-11-0-5-447"
+    create_ba_service_account  = true
+    assign_roles_to_ba_sa      = true
+    ba_service_account         = "none"
+    labels                     = { "managed-by" = "terraform" }
+    vm_tags                    = []
+    firewall_source_ip_ranges  = []
+    ba_registration            = true
+    management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
+  }
+}

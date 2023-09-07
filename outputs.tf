@@ -19,8 +19,8 @@ output "instance_ip_addr" {
   description = "The private IP address of the BA Appliance."
 }
 
-output "bucket_prefix" {
-  value       = local.bucket_prefix
+output "ba_randomised_name" {
+  value       = local.ba_randomised_name
   description = "GCE VM instance backup metadata in bucket"
 }
 
@@ -29,17 +29,17 @@ output "ba_service_account" {
   description = "BA Appliance service account"
 }
 
-output "vm_zone" {
+output "zone" {
   value       = google_compute_instance.appliance.zone
   description = "Zone where the vm appliance deployed."
 }
 
-output "vm_name" {
+output "ba_name" {
   value       = google_compute_instance.appliance.name
   description = "Name of the vm appliance."
 }
 
-output "vm_project_id" {
-  value       = var.project_id
+output "ba_project_id" {
+  value       = var.ba_project_id
   description = "Project where BA is deployed"
 }

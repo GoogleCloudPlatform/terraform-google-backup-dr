@@ -50,40 +50,33 @@ Functional examples are included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | assign\_roles\_to\_ba\_sa | assign roles to the BA service account | `bool` | n/a | yes |
-| ba\_prefix | n/a | `string` | n/a | yes |
-| ba\_roles | n/a | `list(string)` | <pre>[<br>  "roles/backupdr.computeEngineOperator",<br>  "roles/logging.logWriter",<br>  "roles/iam.serviceAccountUser"<br>]</pre> | no |
-| ba\_service\_account | BA service account | `string` | `"none"` | no |
-| boot\_disk\_size | n/a | `number` | `200` | no |
-| boot\_disk\_type | n/a | `string` | `"pd-ssd"` | no |
-| boot\_image | n/a | `string` | `"projects/backupdr-images/global/images/sky-11-0-5-447"` | no |
-| create\_serviceaccount | create BA service account | `bool` | n/a | yes |
-| enable\_services | n/a | `list(string)` | <pre>[<br>  "cloudkms.googleapis.com",<br>  "cloudresourcemanager.googleapis.com",<br>  "compute.googleapis.com",<br>  "iam.googleapis.com",<br>  "logging.googleapis.com"<br>]</pre> | no |
-| host\_project\_id | n/a | `string` | n/a | yes |
-| key\_ring\_roles | n/a | `list(string)` | <pre>[<br>  "roles/cloudkms.cryptoKeyEncrypterDecrypter",<br>  "roles/cloudkms.admin"<br>]</pre> | no |
+| ba\_appliance\_type | provide BA appliance type | `string` | n/a | yes |
+| ba\_name | provide the BA name (random 4 char will be added as suffix) | `string` | n/a | yes |
+| ba\_project\_id | provide the project id | `string` | n/a | yes |
+| ba\_registration | toggle flag to run appliance register API call. We recommended to make it false, once appliance is successfully registered. | `string` | `"true"` | no |
+| ba\_service\_account | provide existing BA service account name | `string` | `"none"` | no |
+| boot\_image | provide the base boot image for appliance. Dont modify for update/upgrade, refer management server console | `string` | `"projects/backupdr-images/global/images/sky-11-0-5-447"` | no |
+| create\_ba\_service\_account | create BA service account | `bool` | n/a | yes |
+| firewall\_source\_ip\_ranges | provide the IP ranges that needs to be allowed for appliance to reach management server | `list(string)` | `[]` | no |
 | labels | A set of key/value label pairs to assign to the resources deployed. | `map(string)` | `{}` | no |
-| machine\_type | n/a | `string` | `"e2-standard-16"` | no |
-| management\_server\_endpoint | n/a | `string` | n/a | yes |
-| network | n/a | `string` | `"default"` | no |
-| primary\_pool\_disk\_size | n/a | `number` | `200` | no |
-| project\_id | n/a | `string` | n/a | yes |
-| region | n/a | `string` | n/a | yes |
-| require\_registration | n/a | `string` | `"true"` | no |
-| snap\_pool\_disk\_size | n/a | `number` | `4096` | no |
-| source\_ranges | n/a | `list(string)` | `[]` | no |
-| subnet | n/a | `string` | n/a | yes |
-| vm\_tags | Tags for VMs | `list(string)` | `[]` | no |
-| zone | n/a | `string` | n/a | yes |
+| management\_server\_endpoint | provide management server API endpoint URL ex. https://uri/actifio | `string` | n/a | yes |
+| network | provide gcp network | `string` | n/a | yes |
+| region | provide gcp region | `string` | n/a | yes |
+| subnet | provide gcp subnet | `string` | n/a | yes |
+| vm\_tags | Tags for appliance VM | `list(string)` | `[]` | no |
+| vpc\_host\_project\_id | provide the vpc host project id | `string` | n/a | yes |
+| zone | provide gcp zone | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| ba\_name | Name of the vm appliance. |
+| ba\_project\_id | Project where BA is deployed |
+| ba\_randomised\_name | GCE VM instance backup metadata in bucket |
 | ba\_service\_account | BA Appliance service account |
-| bucket\_prefix | GCE VM instance backup metadata in bucket |
 | instance\_ip\_addr | The private IP address of the BA Appliance. |
-| vm\_name | Name of the vm appliance. |
-| vm\_project\_id | Project where BA is deployed |
-| vm\_zone | Zone where the vm appliance deployed. |
+| zone | Zone where the vm appliance deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

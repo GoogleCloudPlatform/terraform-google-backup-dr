@@ -62,16 +62,18 @@ resource "google_compute_subnetwork" "subnet" {
 module "appliances" {
   for_each                   = try(var.appliances, {})
   source                     = "../.."
-  create_serviceaccount      = true
-  assign_roles_to_ba_sa      = true
-  ba_prefix                  = each.key
+  create_ba_service_account  = each.value.create_ba_service_account
+  assign_roles_to_ba_sa      = each.value.assign_roles_to_ba_sa
+  ba_name                    = each.key
+  ba_appliance_type          = each.value.ba_appliance_type
   management_server_endpoint = google_backup_dr_management_server.server.management_uri[0].api
-  host_project_id            = each.value.host_project_id
+  vpc_host_project_id        = each.value.vpc_host_project_id
+  ba_project_id              = each.value.ba_project_id
   network                    = google_compute_network.network.name
-  project_id                 = each.value.project_id
   region                     = each.value.region
   subnet                     = google_compute_subnetwork.subnet.name
   zone                       = each.value.zone
-  depends_on                 = [google_backup_dr_management_server.server]
+  firewall_source_ip_ranges  = ["${google_compute_global_address.private_ip_address.address}/${google_compute_global_address.private_ip_address.prefix_length}"]
+  depends_on                 = [google_backup_dr_management_server.server, google_service_networking_connection.default]
 }
 

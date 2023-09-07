@@ -15,9 +15,11 @@
  */
 
 # some of the resource does not support destory so create unit id for name_prefix
-resource "random_id" "id" {
-  byte_length = 2
-}
+resource "random_string" "id" {
+  length = 4
+  upper  = false
+  special = false
+  }
 
 resource "time_static" "activation_date" {}
 resource "random_string" "shared_secret" {
@@ -26,36 +28,93 @@ resource "random_string" "shared_secret" {
   special = false
 }
 locals {
-  timestamp_sanitized = sum([time_static.activation_date.unix, 86400])
-  shared_secret       = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
+    ba_roles = ["roles/backupdr.computeEngineOperator", "roles/logging.logWriter", "roles/iam.serviceAccountUser"]
+    key_ring_roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/cloudkms.admin"]
+    enable_services = ["cloudkms.googleapis.com", "cloudresourcemanager.googleapis.com", "compute.googleapis.com", "iam.googleapis.com", "logging.googleapis.com"]
+    profiles = {
+      STANDARD_FOR_COMPUTE_ENGINE_VMS = {
+        boot_disk_type = "pd-standard"
+        boot_disk_size = "200"
+        snap_pool_disk_size = "10"
+        primary_pool_disk_size = "200"
+        machine_type = "e2-standard-4"
+      },
+
+      STANDARD_FOR_DATABASES_VMWARE_VMS = {
+        boot_disk_type = "pd-balanced"
+        boot_disk_size = "200"
+        snap_pool_disk_size = "4096"
+        primary_pool_disk_size = "200"
+        machine_type = "n2-standard-16"
+      },
+
+      BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL = {
+        boot_disk_type = "pd-standard"
+        boot_disk_size = "200"
+        snap_pool_disk_size = "4096"
+        primary_pool_disk_size = "200"
+        machine_type = "e2-standard-16"
+      },
+      BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD = {
+        boot_disk_type = "pd-standard"
+        boot_disk_size = "200"
+        snap_pool_disk_size = "4096"
+        primary_pool_disk_size = "200"
+        machine_type = "e2-standard-16"
+      },
+      BASIC_FOR_DATABASES_VMWARE_VMS_SSD = {
+        boot_disk_type = "pd-ssd"
+        boot_disk_size = "200"
+        snap_pool_disk_size = "4096"
+        primary_pool_disk_size = "200"
+        machine_type = "e2-standard-16"
+      }
+    }
 }
 
 locals {
-  ba_service_account = var.create_serviceaccount ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
-  bucket_prefix      = join("-", tolist([var.ba_prefix, random_id.id.hex]))
+  timestamp_sanitized = sum([time_static.activation_date.unix, 86400])
+  shared_secret       = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
+  ba_service_account = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
+  ba_randomised_name      = join("-", tolist([var.ba_name, random_string.id.id]))
+}
+
+# make sure the subnet exist.
+data "google_compute_subnetwork" "ba_subnet" {
+  name    = var.subnet
+  project = var.vpc_host_project_id
+  region  = var.region
+
+  lifecycle {
+    postcondition {
+      condition     = self.private_ip_google_access == true
+      error_message = "Make sure subnet exists and private_ip_google_access is required to be enabled!"
+    }
+  }
 }
 
 # Enable required services
 resource "google_project_service" "enable_services" {
-  project            = var.project_id
-  for_each           = toset(var.enable_services)
+  project            = var.ba_project_id
+  for_each           = toset(local.enable_services)
   service            = each.key
   disable_on_destroy = false
+  depends_on = [data.google_compute_subnetwork.ba_subnet  ]
 }
 
 # create service account for BA appliance
 resource "google_service_account" "ba_service_account" {
-  project      = var.project_id
-  count        = var.create_serviceaccount ? 1 : 0
-  account_id   = var.ba_prefix
+  project      = var.ba_project_id
+  count        = var.create_ba_service_account ? 1 : 0
+  account_id   = var.ba_name
   display_name = "Backup DR Appliance Service Account"
   depends_on   = [google_project_service.enable_services]
 }
 
 # Assign the required permssions for BA Appliance service account.
 resource "google_project_iam_member" "ba_service_account_roles" {
-  project    = var.project_id
-  for_each   = var.assign_roles_to_ba_sa ? toset(var.ba_roles) : []
+  project    = var.ba_project_id
+  for_each   = var.assign_roles_to_ba_sa ? toset(local.ba_roles) : []
   member     = "serviceAccount:${local.ba_service_account}"
   role       = each.key
   depends_on = [google_project_service.enable_services]
@@ -64,22 +123,22 @@ resource "google_project_iam_member" "ba_service_account_roles" {
 
 # give BA service account permissions to access OnVault ba_vault_metdata
 resource "google_project_iam_member" "ba_service_vault_role" {
-  project = var.project_id
+  project = var.ba_project_id
   count   = var.assign_roles_to_ba_sa ? 1 : 0
   role    = "roles/backupdr.cloudStorageOperator"
   member  = "serviceAccount:${local.ba_service_account}"
   condition {
-    title       = "${local.bucket_prefix}-cloud-storage-metadata"
+    title       = "${local.ba_randomised_name}-cloud-storage-metadata"
     description = "Permissions for storing GCE VM instance backup metadata in bucket"
-    expression  = "resource.name.startsWith(\"projects/_/buckets/${local.bucket_prefix}\")"
+    expression  = "resource.name.startsWith(\"projects/_/buckets/${local.ba_randomised_name}\")"
   }
 }
 
 # create keyring and crypto keys
 resource "google_kms_key_ring" "ba_keyring" {
-  project    = var.project_id
+  project    = var.ba_project_id
   location   = var.region
-  name       = "${var.ba_prefix}-keyring-${random_id.id.hex}"
+  name       = "${local.ba_randomised_name}-keyring"
   depends_on = [google_project_service.enable_services]
 }
 
@@ -98,94 +157,79 @@ resource "google_kms_crypto_key" "kek" {
 # assign the permission for BA Appliance to access keyring
 resource "google_kms_key_ring_iam_member" "ba_keyring" {
   key_ring_id = google_kms_key_ring.ba_keyring.id
-  for_each    = toset(var.key_ring_roles)
+  for_each    = toset(local.key_ring_roles)
   role        = each.key
   member      = "serviceAccount:${local.ba_service_account}"
 }
 
 # create compute resource for BA Appliance VM.
-# make sure the subnet exist.
-data "google_compute_subnetwork" "ba_subnet" {
-  # The subnet is pre-created per region in the default network
-  name    = var.subnet
-  project = var.host_project_id
-  region  = var.region
-
-  lifecycle {
-    postcondition {
-      condition     = self.private_ip_google_access == true
-      error_message = "private_ip_google_access is required to be enabled on subnet!."
-    }
-  }
-}
-
 resource "google_compute_disk" "boot_disk" {
-  project                   = var.project_id
+  project                   = var.ba_project_id
   image                     = var.boot_image
-  name                      = var.ba_prefix
+  name                      = local.ba_randomised_name
   physical_block_size_bytes = 4096
-  size                      = var.boot_disk_size
-  type                      = var.boot_disk_type
+  size                      = local.profiles[var.ba_appliance_type].boot_disk_size
+  type                      = local.profiles[var.ba_appliance_type].boot_disk_type
   zone                      = var.zone
   labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 resource "google_compute_disk" "ba_snapshot_pool" {
-  project                   = var.project_id
-  name                      = "${var.ba_prefix}-snapshot-pool"
+  project                   = var.ba_project_id
+  name                      = "${local.ba_randomised_name}-snapshot-pool"
   physical_block_size_bytes = 4096
-  size                      = var.snap_pool_disk_size
-  type                      = var.boot_disk_type
+  size                      = local.profiles[var.ba_appliance_type].snap_pool_disk_size
+  type                      = local.profiles[var.ba_appliance_type].boot_disk_type
   zone                      = var.zone
   labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 
 resource "google_compute_disk" "ba_primary_pool" {
-  project                   = var.project_id
-  name                      = "${var.ba_prefix}-primary-pool"
+  project                   = var.ba_project_id
+  name                      = "${local.ba_randomised_name}-primary-pool"
   physical_block_size_bytes = 4096
-  size                      = var.primary_pool_disk_size
-  type                      = var.boot_disk_type
+  size                      = local.profiles[var.ba_appliance_type].primary_pool_disk_size
+  type                      = local.profiles[var.ba_appliance_type].boot_disk_type
   zone                      = var.zone
   labels                    = var.labels
   depends_on                = [google_project_service.enable_services]
 }
 
 resource "google_compute_attached_disk" "primary-pool" {
-  project     = var.project_id
+  project     = var.ba_project_id
   disk        = google_compute_disk.ba_primary_pool.id
   instance    = google_compute_instance.appliance.id
   device_name = "primary-pool"
 }
 
 resource "google_compute_attached_disk" "snapshot-pool" {
-  project     = var.project_id
+  project     = var.ba_project_id
   disk        = google_compute_disk.ba_snapshot_pool.id
   instance    = google_compute_instance.appliance.id
   device_name = "snapshot-pool"
 }
 
 resource "google_compute_instance" "appliance" {
-  project = var.project_id
+  project = var.ba_project_id
   boot_disk {
     auto_delete = true
-    device_name = var.ba_prefix
+    device_name = local.ba_randomised_name
     source      = google_compute_disk.boot_disk.id
   }
   deletion_protection = true
-  machine_type        = var.machine_type
+  machine_type        = local.profiles[var.ba_appliance_type].machine_type
   metadata = {
     performance_pool_device = "snapshot-pool"
     primary_pool_device     = "primary-pool"
     kms_keyringname         = google_kms_key_ring.ba_keyring.name
     bootstrap_secret        = local.shared_secret
-    bucket_prefix           = local.bucket_prefix
+    bucket_prefix           = local.ba_randomised_name
   }
-  name = var.ba_prefix
+  name = local.ba_randomised_name
   network_interface {
     subnetwork         = data.google_compute_subnetwork.ba_subnet.name
-    subnetwork_project = var.host_project_id
+    subnetwork_project = var.vpc_host_project_id
   }
   service_account {
     email  = local.ba_service_account
@@ -202,34 +246,34 @@ resource "google_compute_instance" "appliance" {
   }
   labels     = var.labels
   tags       = var.vm_tags
-  depends_on = [google_project_service.enable_services]
+  depends_on = [google_project_service.enable_services, google_service_account.ba_service_account]
 
 }
 
 # create firewall for the MC to communicate with BA applaince.
 resource "google_compute_firewall" "ba_firewall_rule" {
-  project = var.host_project_id
-  count   = length(var.source_ranges) > 0 ? 1 : 0
+  project = var.vpc_host_project_id
+  count   = length(var.firewall_source_ip_ranges) > 0 ? 1 : 0
   allow {
     ports    = ["26", "443", "3260", "5107"]
     protocol = "tcp"
   }
   direction               = "INGRESS"
-  name                    = "${var.ba_prefix}-firewall-rule"
+  name                    = "${local.ba_randomised_name}-firewall-rule"
   network                 = var.network
   priority                = 1000
-  source_ranges           = var.source_ranges
+  source_ranges           = var.firewall_source_ip_ranges
   target_service_accounts = [local.ba_service_account]
+  depends_on = [ google_compute_instance.appliance ]
 }
-
 
 ### register BA appliance to management_server_endpoint
 data "google_client_config" "default" {
-  count = var.require_registration ? 1 : 0
+  count = var.ba_registration ? 1 : 0
 }
 
 data "http" "actifio_session" {
-  count  = var.require_registration ? 1 : 0
+  count  = var.ba_registration ? 1 : 0
   url    = "${var.management_server_endpoint}/session"
   method = "POST"
   request_headers = {
@@ -239,14 +283,14 @@ data "http" "actifio_session" {
   lifecycle {
     postcondition {
       condition     = contains([200, 201, 204], self.status_code)
-      error_message = "Actifio Session status code invalid"
+      error_message = "Actifio Session status code invalid. Make sure Management Server Configuration is correct!"
     }
   }
-  depends_on = [google_compute_instance.appliance]
+  depends_on = [google_compute_instance.appliance, google_compute_attached_disk.snapshot-pool, google_compute_attached_disk.primary-pool]
 }
 
 data "http" "actifio_register" {
-  count  = var.require_registration ? 1 : 0
+  count  = var.ba_registration ? 1 : 0
   url    = "${var.management_server_endpoint}/cluster/register"
   method = "POST"
   request_headers = {
