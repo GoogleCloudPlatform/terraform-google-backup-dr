@@ -16,10 +16,10 @@
 
 # some of the resource does not support destory so create unit id for name_prefix
 resource "random_string" "id" {
-  length = 4
-  upper  = false
+  length  = 4
+  upper   = false
   special = false
-  }
+}
 
 resource "time_static" "activation_date" {}
 resource "random_string" "shared_secret" {
@@ -28,55 +28,32 @@ resource "random_string" "shared_secret" {
   special = false
 }
 locals {
-    ba_roles = ["roles/backupdr.computeEngineOperator", "roles/logging.logWriter", "roles/iam.serviceAccountUser"]
-    key_ring_roles = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/cloudkms.admin"]
-    enable_services = ["cloudkms.googleapis.com", "cloudresourcemanager.googleapis.com", "compute.googleapis.com", "iam.googleapis.com", "logging.googleapis.com"]
-    profiles = {
-      STANDARD_FOR_COMPUTE_ENGINE_VMS = {
-        boot_disk_type = "pd-standard"
-        boot_disk_size = "200"
-        snap_pool_disk_size = "10"
-        primary_pool_disk_size = "200"
-        machine_type = "e2-standard-4"
-      },
-
-      STANDARD_FOR_DATABASES_VMWARE_VMS = {
-        boot_disk_type = "pd-balanced"
-        boot_disk_size = "200"
-        snap_pool_disk_size = "4096"
-        primary_pool_disk_size = "200"
-        machine_type = "n2-standard-16"
-      },
-
-      BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL = {
-        boot_disk_type = "pd-standard"
-        boot_disk_size = "200"
-        snap_pool_disk_size = "4096"
-        primary_pool_disk_size = "200"
-        machine_type = "e2-standard-16"
-      },
-      BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD = {
-        boot_disk_type = "pd-standard"
-        boot_disk_size = "200"
-        snap_pool_disk_size = "4096"
-        primary_pool_disk_size = "200"
-        machine_type = "e2-standard-16"
-      },
-      BASIC_FOR_DATABASES_VMWARE_VMS_SSD = {
-        boot_disk_type = "pd-ssd"
-        boot_disk_size = "200"
-        snap_pool_disk_size = "4096"
-        primary_pool_disk_size = "200"
-        machine_type = "e2-standard-16"
-      }
+  ba_roles        = ["roles/backupdr.computeEngineOperator", "roles/logging.logWriter", "roles/iam.serviceAccountUser"]
+  key_ring_roles  = ["roles/cloudkms.cryptoKeyEncrypterDecrypter", "roles/cloudkms.admin"]
+  enable_services = ["cloudkms.googleapis.com", "cloudresourcemanager.googleapis.com", "compute.googleapis.com", "iam.googleapis.com", "logging.googleapis.com"]
+  profiles = {
+    STANDARD_FOR_COMPUTE_ENGINE_VMS = {
+      boot_disk_type         = "pd-standard"
+      boot_disk_size         = "200"
+      snap_pool_disk_size    = "10"
+      primary_pool_disk_size = "200"
+      machine_type           = "e2-standard-4"
+    },
+    STANDARD_FOR_DATABASES_VMWARE_VMS = {
+      boot_disk_type         = "pd-balanced"
+      boot_disk_size         = "200"
+      snap_pool_disk_size    = "4096"
+      primary_pool_disk_size = "200"
+      machine_type           = "n2-standard-16"
     }
+  }
 }
 
 locals {
   timestamp_sanitized = sum([time_static.activation_date.unix, 86400])
   shared_secret       = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
-  ba_service_account = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
-  ba_randomised_name      = join("-", tolist([var.ba_name, random_string.id.id]))
+  ba_service_account  = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
+  ba_randomised_name  = join("-", tolist([var.ba_name, random_string.id.id]))
 }
 
 # make sure the subnet exist.
@@ -99,7 +76,7 @@ resource "google_project_service" "enable_services" {
   for_each           = toset(local.enable_services)
   service            = each.key
   disable_on_destroy = false
-  depends_on = [data.google_compute_subnetwork.ba_subnet  ]
+  depends_on         = [data.google_compute_subnetwork.ba_subnet]
 }
 
 # create service account for BA appliance
@@ -245,7 +222,7 @@ resource "google_compute_instance" "appliance" {
     ignore_changes = [attached_disk, metadata]
   }
   labels     = var.labels
-  tags       = var.vm_tags
+  tags       = var.network_tags
   depends_on = [google_project_service.enable_services, google_service_account.ba_service_account]
 
 }
@@ -264,7 +241,7 @@ resource "google_compute_firewall" "ba_firewall_rule" {
   priority                = 1000
   source_ranges           = var.firewall_source_ip_ranges
   target_service_accounts = [local.ba_service_account]
-  depends_on = [ google_compute_instance.appliance ]
+  depends_on              = [google_compute_instance.appliance]
 }
 
 ### register BA appliance to management_server_endpoint

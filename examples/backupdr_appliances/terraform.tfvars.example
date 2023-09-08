@@ -12,7 +12,7 @@ appliances = {
     assign_roles_to_ba_sa      = true
     ba_service_account         = "none"
     labels                     = { "managed-by" = "terraform"}
-    vm_tags                    = []
+    network_tags                    = []
     firewall_source_ip_ranges  = []
     ba_registration            = true
     management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
@@ -30,7 +30,7 @@ appliances = {
     assign_roles_to_ba_sa      = true
     ba_service_account         = "none"
     labels                     = { "managed-by" = "terraform"}
-    vm_tags                    = []
+    network_tags                    = []
     firewall_source_ip_ranges  = []
     ba_registration            = true
     management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
@@ -48,7 +48,7 @@ appliances = {
     assign_roles_to_ba_sa      = true
     ba_service_account         = "none"
     labels                     = { "managed-by" = "terraform" }
-    vm_tags                    = []
+    network_tags                    = []
     firewall_source_ip_ranges  = []
     ba_registration            = true
     management_server_endpoint = "https://bmc-30000000009-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"

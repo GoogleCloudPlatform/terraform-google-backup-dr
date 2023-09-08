@@ -28,7 +28,7 @@ variable "appliances" {
     ba_service_account         = optional(string)
     assign_roles_to_ba_sa      = optional(bool)
     create_ba_service_account  = optional(bool)
-    vm_tags                    = optional(list(string))
+    network_tags               = optional(list(string))
     boot_image                 = optional(string)
     labels                     = optional(map(string))
     firewall_source_ip_ranges  = optional(list(string))

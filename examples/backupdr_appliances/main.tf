@@ -34,7 +34,7 @@ module "multiple_appliances" {
   ba_appliance_type         = each.value.ba_appliance_type
   boot_image                = each.value.boot_image
   labels                    = each.value.labels
-  vm_tags                   = each.value.vm_tags
+  network_tags              = each.value.network_tags
   firewall_source_ip_ranges = each.value.firewall_source_ip_ranges
 
   ba_registration            = each.value.ba_registration

@@ -61,9 +61,9 @@ Functional examples are included in the
 | labels | A set of key/value label pairs to assign to the resources deployed. | `map(string)` | `{}` | no |
 | management\_server\_endpoint | provide management server API endpoint URL ex. https://uri/actifio | `string` | n/a | yes |
 | network | provide gcp network | `string` | n/a | yes |
+| network\_tags | Tags for appliance VM | `list(string)` | `[]` | no |
 | region | provide gcp region | `string` | n/a | yes |
 | subnet | provide gcp subnet | `string` | n/a | yes |
-| vm\_tags | Tags for appliance VM | `list(string)` | `[]` | no |
 | vpc\_host\_project\_id | provide the vpc host project id | `string` | n/a | yes |
 | zone | provide gcp zone | `string` | n/a | yes |
 

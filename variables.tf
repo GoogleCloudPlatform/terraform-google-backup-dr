@@ -15,64 +15,64 @@
  */
 
 variable "ba_project_id" {
-  type = string
+  type        = string
   description = "provide the project id"
 }
 
 variable "vpc_host_project_id" {
-  type = string
+  type        = string
   description = "provide the vpc host project id"
 }
 
 variable "ba_name" {
-  type = string
+  type        = string
   description = "provide the BA name (random 4 char will be added as suffix)"
 }
 
 variable "firewall_source_ip_ranges" {
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
   description = "provide the IP ranges that needs to be allowed for appliance to reach management server"
 }
 
 variable "ba_registration" {
-  type    = string
-  default = "true"
+  type        = string
+  default     = "true"
   description = "toggle flag to run appliance register API call. We recommended to make it false, once appliance is successfully registered."
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "provide gcp region"
 }
 
 variable "zone" {
-  type = string
+  type        = string
   description = "provide gcp zone"
 }
 
 variable "network" {
-  type    = string
-    description = "provide gcp network"
+  type        = string
+  description = "provide gcp network"
 }
 
 variable "subnet" {
-  type = string
-      description = "provide gcp subnet"
+  type        = string
+  description = "provide gcp subnet"
 }
 
 variable "management_server_endpoint" {
-  type = string
-      description = "provide management server API endpoint URL ex. https://uri/actifio"
+  type        = string
+  description = "provide management server API endpoint URL ex. https://uri/actifio"
 }
 
 variable "boot_image" {
-  type    = string
-  default = "projects/backupdr-images/global/images/sky-11-0-5-447"
+  type        = string
+  default     = "projects/backupdr-images/global/images/sky-11-0-5-447"
   description = "provide the base boot image for appliance. Dont modify for update/upgrade, refer management server console"
 }
 
-variable "vm_tags" {
+variable "network_tags" {
   type        = list(string)
   description = "Tags for appliance VM"
   default     = []
@@ -101,10 +101,10 @@ variable "ba_service_account" {
 }
 
 variable "ba_appliance_type" {
-  type = string
+  type        = string
   description = "provide BA appliance type"
   validation {
-    condition = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS","BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL","BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD","BASIC_FOR_DATABASES_VMWARE_VMS_SSD"], var.ba_appliance_type)
-    error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL, BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD, BASIC_FOR_DATABASES_VMWARE_VMS_SSD, STANDARD_FOR_DATABASES_VMWARE_VMS."
+    condition     = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS"], var.ba_appliance_type)
+    error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, STANDARD_FOR_DATABASES_VMWARE_VMS."
   }
 }
