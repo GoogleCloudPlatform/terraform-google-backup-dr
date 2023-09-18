@@ -14,18 +14,45 @@
  * limitations under the License.
  */
 
+locals {
+  network = "custom-network"
+  region  = "us-central1"
+  appliances = {
+    "backup-recovery-appliance001" = {
+      vpc_host_project_id       = "gcp-project-id"
+      ba_project_id             = "gcp-project-id"
+      region                    = "us-central1"
+      zone                      = "us-central1-a"
+      ba_registration           = true
+      ba_appliance_type         = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
+      create_ba_service_account = true
+      assign_roles_to_ba_sa     = true
+    },
+    "backup-recovery-appliance002" = {
+      vpc_host_project_id       = "gcp-project-id"
+      ba_project_id             = "gcp-project-id"
+      region                    = "us-central1"
+      zone                      = "us-central1-a"
+      ba_registration           = true
+      ba_appliance_type         = "STANDARD_FOR_DATABASES_VMWARE_VMS"
+      create_ba_service_account = true
+      assign_roles_to_ba_sa     = true
+    }
+  }
+}
+
 resource "google_compute_network" "network" {
-  name                    = var.network
-  project                 = var.project
+  name                    = local.network
+  project                 = var.project_id
   auto_create_subnetworks = false
 }
 
 resource "google_compute_global_address" "private_ip_address" {
-  name          = "global-psconnect-ip-${var.network}"
+  name          = "global-psconnect-ip-${local.network}"
   address_type  = "INTERNAL"
   purpose       = "VPC_PEERING"
   prefix_length = 20
-  project       = var.project
+  project       = var.project_id
   network       = google_compute_network.network.id
 }
 
@@ -37,30 +64,30 @@ resource "google_service_networking_connection" "default" {
 
 resource "google_backup_dr_management_server" "server" {
   provider = google-beta
-  location = var.region
-  project  = var.project
+  location = local.region
+  project  = var.project_id
 
-  name = var.mc_name
-  type = var.mc_type
+  name = "ms-console-custom"
+  type = "BACKUP_RESTORE"
   networks {
     network      = google_compute_network.network.id
-    peering_mode = var.mc_peering_mode
+    peering_mode = "PRIVATE_SERVICE_ACCESS"
   }
   depends_on = [google_service_networking_connection.default]
 }
 
 ## setup subnet for ba appliance
 resource "google_compute_subnetwork" "subnet" {
-  name                     = var.subnet
-  ip_cidr_range            = var.subnet_cidr
-  region                   = var.region
-  project                  = var.project
+  name                     = "custom-subnet"
+  ip_cidr_range            = "10.20.0.0/16"
+  region                   = local.region
+  project                  = var.project_id
   network                  = google_compute_network.network.id
   private_ip_google_access = true
 }
 
 module "appliances" {
-  for_each                   = try(var.appliances, {})
+  for_each                   = local.appliances
   source                     = "../.."
   create_ba_service_account  = each.value.create_ba_service_account
   assign_roles_to_ba_sa      = each.value.assign_roles_to_ba_sa

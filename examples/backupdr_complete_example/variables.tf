@@ -14,67 +14,6 @@
  * limitations under the License.
  */
 
-variable "project" {
+variable "project_id" {
   type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "network" {
-  type    = string
-  default = "custom-network"
-}
-
-variable "subnet" {
-  type    = string
-  default = "custom-network"
-}
-
-variable "subnet_cidr" {
-  type    = string
-  default = "10.20.0.0/16"
-}
-
-
-variable "mc_peering_mode" {
-  type        = string
-  description = "specify peering mode for management server"
-  default     = "PRIVATE_SERVICE_ACCESS"
-}
-
-variable "mc_name" {
-  type        = string
-  description = "provide management server name"
-  default     = "ms-console"
-}
-
-variable "mc_type" {
-  type        = string
-  description = "provide management server type"
-  default     = "BACKUP_RESTORE"
-}
-
-variable "appliances" {
-  type = map(object({
-    management_server_endpoint = optional(string)
-    vpc_host_project_id        = optional(string)
-    network                    = optional(string)
-    subnet                     = optional(string)
-    region                     = optional(string)
-    zone                       = optional(string)
-    ba_project_id              = optional(string)
-    ba_registration            = optional(bool)
-    ba_appliance_type          = string
-    ba_service_account         = optional(string)
-    assign_roles_to_ba_sa      = optional(bool)
-    create_ba_service_account  = optional(bool)
-    network_tags               = optional(list(string))
-    boot_image                 = optional(string)
-    labels                     = optional(map(string))
-    firewall_source_ip_ranges  = optional(list(string))
-  }))
-  default     = {}
-  description = "map of appliances with properties"
 }
