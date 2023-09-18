@@ -16,30 +16,30 @@
 
 output "instance_ip_addr" {
   value       = google_compute_instance.appliance.network_interface[0].network_ip
-  description = "The private IP address of the BA Appliance."
+  description = "The private IP address of the backup/recovery appliance."
 }
 
 output "ba_randomised_name" {
   value       = local.ba_randomised_name
-  description = "GCE VM instance backup metadata in bucket"
+  description = "The randomised name of backup/recovery appliance"
 }
 
 output "ba_service_account" {
   value       = local.ba_service_account
-  description = "BA Appliance service account"
+  description = "The service account used with the backup/recovery appliance."
 }
 
 output "zone" {
   value       = google_compute_instance.appliance.zone
-  description = "Zone where the vm appliance deployed."
+  description = "Zone where the backup/recovery appliance is deployed."
 }
 
 output "ba_name" {
   value       = google_compute_instance.appliance.name
-  description = "Name of the vm appliance."
+  description = "Name of the backup/recovery appliance provided as input."
 }
 
 output "ba_project_id" {
   value       = var.ba_project_id
-  description = "Project where BA is deployed"
+  description = "Project where backup/recovery appliance is deployed."
 }

@@ -49,34 +49,34 @@ Functional examples are included in the
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| assign\_roles\_to\_ba\_sa | assign roles to the BA service account | `bool` | n/a | yes |
-| ba\_appliance\_type | provide BA appliance type | `string` | n/a | yes |
-| ba\_name | provide the BA name (random 4 char will be added as suffix) | `string` | n/a | yes |
-| ba\_project\_id | provide the project id | `string` | n/a | yes |
-| ba\_registration | toggle flag to run appliance register API call. We recommended to make it false, once appliance is successfully registered. | `string` | `"true"` | no |
-| ba\_service\_account | provide existing BA service account name | `string` | `"none"` | no |
-| boot\_image | provide the base boot image for appliance. Dont modify for update/upgrade, refer management server console | `string` | `"projects/backupdr-images/global/images/sky-11-0-5-447"` | no |
-| create\_ba\_service\_account | create BA service account | `bool` | n/a | yes |
-| firewall\_source\_ip\_ranges | provide the IP ranges that needs to be allowed for appliance to reach management server | `list(string)` | `[]` | no |
-| labels | A set of key/value label pairs to assign to the resources deployed. | `map(string)` | `{}` | no |
-| management\_server\_endpoint | provide management server API endpoint URL ex. https://uri/actifio | `string` | n/a | yes |
-| network | provide gcp network | `string` | n/a | yes |
-| network\_tags | Tags for appliance VM | `list(string)` | `[]` | no |
-| region | provide gcp region | `string` | n/a | yes |
-| subnet | provide gcp subnet | `string` | n/a | yes |
-| vpc\_host\_project\_id | provide the vpc host project id | `string` | n/a | yes |
-| zone | provide gcp zone | `string` | n/a | yes |
+| assign\_roles\_to\_ba\_sa | Flag to assign the necessary roles to the backup/recovery appliance service account. | `bool` | n/a | yes |
+| ba\_appliance\_type | Specify appliance type that you want to deploy. Supported appliance types are: [ "STANDARD\_FOR\_COMPUTE\_ENGINE\_VMS" , "STANDARD\_FOR\_DATABASES\_VMWARE\_VMS" ] | `string` | n/a | yes |
+| ba\_name | Provide a name for the backup/recovery appliance. The name will be suffixed with four random characters. | `string` | n/a | yes |
+| ba\_project\_id | Provide the project ID where you want to deploy the backup/recovery appliance. | `string` | n/a | yes |
+| ba\_registration | Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered. | `string` | `"true"` | no |
+| ba\_service\_account | Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create\_ba\_service\_account variable is set to true. | `string` | `"none"` | no |
+| boot\_image | Provide the boot image for backup/recovery appliance.  Don’t modify this variable to update or upgrade the appliance version. You can upgrade the appliance only through the Backup and DR Service management console. | `string` | `"projects/backupdr-images/global/images/sky-11-0-5-447"` | no |
+| create\_ba\_service\_account | Flag to create a service account for backup/recovery appliance. | `bool` | n/a | yes |
+| firewall\_source\_ip\_ranges | Provide the IP ranges to allow the firewall communication between the management console, the appliance, and other subnets where workloads need to be backed up. | `list(string)` | `[]` | no |
+| labels | A set of key-value label pairs to be assigned to the deployed backup/recovery appliance. | `map(string)` | `{}` | no |
+| management\_server\_endpoint | Provide a management console endpoint URL. For example, https://bmc-xxxx-dot-us-central1.backupdr.googleusercontent.com/actifio | `string` | n/a | yes |
+| network | Provide a network which the appliance will be part of. | `string` | n/a | yes |
+| network\_tags | Provide the network tags for backup/recovery appliance VM. These tags allow you to apply firewall rules and routes to a specific instance or set of instances. | `list(string)` | `[]` | no |
+| region | Provide a region where you want to deploy a backup/recovery appliance. | `string` | n/a | yes |
+| subnet | Provide a network subnet which the appliance will be part of. | `string` | n/a | yes |
+| vpc\_host\_project\_id | Provide the VPC host project ID. In case of a non-shared (dedicated) VPC, this will be the  same as the backup/recovery appliance project ID. In case of shared VPC, this will be the project ID of the host VPC project. | `string` | n/a | yes |
+| zone | Provide a zone within the selected region where you want to deploy a backup/recovery appliance. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| ba\_name | Name of the vm appliance. |
-| ba\_project\_id | Project where BA is deployed |
-| ba\_randomised\_name | GCE VM instance backup metadata in bucket |
-| ba\_service\_account | BA Appliance service account |
-| instance\_ip\_addr | The private IP address of the BA Appliance. |
-| zone | Zone where the vm appliance deployed. |
+| ba\_name | Name of the backup/recovery appliance provided as input. |
+| ba\_project\_id | Project where backup/recovery appliance is deployed. |
+| ba\_randomised\_name | The randomised name of backup/recovery appliance |
+| ba\_service\_account | The service account used with the backup/recovery appliance. |
+| instance\_ip\_addr | The private IP address of the backup/recovery appliance. |
+| zone | Zone where the backup/recovery appliance is deployed. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

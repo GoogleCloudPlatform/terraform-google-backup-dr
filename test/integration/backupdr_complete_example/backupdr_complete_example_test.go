@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package new_network
+package complete_example
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ func TestBackupDRNewNetwork(t *testing.T) {
 	applianceNewNetwork := tft.NewTFBlueprintTest(t)
 
 	const (
-		instanceNamePrefix = "sky-appliance-100033"
+		instanceNamePrefix = "backup-recovery-appliance"
 		zone               = "us-central1-a"
 	)
 	applianceNewNetwork.DefineVerify(func(assert *assert.Assertions) {
@@ -37,8 +37,8 @@ func TestBackupDRNewNetwork(t *testing.T) {
 
 		instances := gcloud.Run(t, fmt.Sprintf("compute instances list --project %s --filter name~%s", projectID, instanceNamePrefix))
 
-		// check if appliance gce instance is available
-		assert.Equal(1, len(instances.Array()), "found 1 appliance gce instance")
+		// check if two appliances gce instance is available
+		assert.Equal(2, len(instances.Array()), "found 2 appliance gce instance")
 
 		for _, instance := range instances.Array() {
 			instanceStatus := instance.Get("status").String()

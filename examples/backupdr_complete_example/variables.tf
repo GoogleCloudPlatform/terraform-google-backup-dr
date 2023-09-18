@@ -22,10 +22,6 @@ variable "region" {
   type = string
 }
 
-variable "zone" {
-  type = string
-}
-
 variable "network" {
   type    = string
   default = "custom-network"
