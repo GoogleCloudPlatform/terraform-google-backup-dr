@@ -16,93 +16,93 @@
 
 variable "ba_project_id" {
   type        = string
-  description = "provide the project id"
+  description = "Provide the project ID where you want to deploy the backup/recovery appliance."
 }
 
 variable "vpc_host_project_id" {
   type        = string
-  description = "provide the vpc host project id"
+  description = "Provide the VPC host project ID. In case of a non-shared (dedicated) VPC, this will be the  same as the backup/recovery appliance project ID. In case of shared VPC, this will be the project ID of the host VPC project."
 }
 
 variable "ba_name" {
   type        = string
-  description = "provide the BA name (random 4 char will be added as suffix)"
+  description = "Provide a name for the backup/recovery appliance. The name will be suffixed with four random characters."
 }
 
 variable "firewall_source_ip_ranges" {
   type        = list(string)
   default     = []
-  description = "provide the IP ranges that needs to be allowed for appliance to reach management server"
+  description = "Provide the IP ranges to allow the firewall communication between the management console, the appliance, and other subnets where workloads need to be backed up."
 }
 
 variable "ba_registration" {
   type        = string
   default     = "true"
-  description = "toggle flag to run appliance register API call. We recommended to make it false, once appliance is successfully registered."
+  description = "Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered."
 }
 
 variable "region" {
   type        = string
-  description = "provide gcp region"
+  description = "Provide a region where you want to deploy a backup/recovery appliance."
 }
 
 variable "zone" {
   type        = string
-  description = "provide gcp zone"
+  description = "Provide a zone within the selected region where you want to deploy a backup/recovery appliance."
 }
 
 variable "network" {
   type        = string
-  description = "provide gcp network"
+  description = "Provide a network which the appliance will be part of."
 }
 
 variable "subnet" {
   type        = string
-  description = "provide gcp subnet"
+  description = "Provide a network subnet which the appliance will be part of."
 }
 
 variable "management_server_endpoint" {
   type        = string
-  description = "provide management server API endpoint URL ex. https://uri/actifio"
+  description = "Provide a management console endpoint URL. For example, https://bmc-xxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
 }
 
 variable "boot_image" {
   type        = string
   default     = "projects/backupdr-images/global/images/sky-11-0-5-447"
-  description = "provide the base boot image for appliance. Dont modify for update/upgrade, refer management server console"
+  description = "Provide the boot image for backup/recovery appliance.  Don’t modify this variable to update or upgrade the appliance version. You can upgrade the appliance only through the Backup and DR Service management console."
 }
 
 variable "network_tags" {
   type        = list(string)
-  description = "Tags for appliance VM"
+  description = "Provide the network tags for backup/recovery appliance VM. These tags allow you to apply firewall rules and routes to a specific instance or set of instances."
   default     = []
 }
 
 variable "labels" {
   type        = map(string)
-  description = "A set of key/value label pairs to assign to the resources deployed."
+  description = "A set of key-value label pairs to be assigned to the deployed backup/recovery appliance."
   default     = {}
 }
 
 variable "create_ba_service_account" {
   type        = bool
-  description = "create BA service account"
+  description = "Flag to create a service account for backup/recovery appliance."
 }
 
 variable "assign_roles_to_ba_sa" {
   type        = bool
-  description = "assign roles to the BA service account"
+  description = "Flag to assign the necessary roles to the backup/recovery appliance service account."
 }
 
 variable "ba_service_account" {
   type        = string
-  description = "provide existing BA service account name"
+  description = "Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create_ba_service_account variable is set to true."
   default     = "none"
 }
 
 variable "ba_appliance_type" {
   type        = string
-  description = "provide BA appliance type"
+  description = "Specify appliance type that you want to deploy. Supported appliance types are: [ \"STANDARD_FOR_COMPUTE_ENGINE_VMS\" , \"STANDARD_FOR_DATABASES_VMWARE_VMS\" ]"
   validation {
     condition     = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS"], var.ba_appliance_type)
     error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, STANDARD_FOR_DATABASES_VMWARE_VMS."

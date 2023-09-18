@@ -266,6 +266,7 @@ data "http" "actifio_session" {
   depends_on = [google_compute_instance.appliance, google_compute_attached_disk.snapshot-pool, google_compute_attached_disk.primary-pool]
 }
 
+# tflint-ignore: terraform_unused_declarations
 data "http" "actifio_register" {
   count  = var.ba_registration ? 1 : 0
   url    = "${var.management_server_endpoint}/cluster/register"
