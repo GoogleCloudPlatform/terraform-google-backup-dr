@@ -41,5 +41,6 @@
 |------|-------------|
 | appliances | n/a |
 | ms\_console | n/a |
+| project\_id | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
