@@ -67,8 +67,8 @@ module "appliances" {
   ba_name                    = each.key
   ba_appliance_type          = each.value.ba_appliance_type
   management_server_endpoint = google_backup_dr_management_server.server.management_uri[0].api
-  vpc_host_project_id        = each.value.vpc_host_project_id
-  ba_project_id              = each.value.ba_project_id
+  vpc_host_project_id        = var.project_id
+  ba_project_id              = var.project_id
   network                    = google_compute_network.network.name
   region                     = each.value.region
   subnet                     = google_compute_subnetwork.subnet.name

@@ -42,6 +42,9 @@ crash.log
 # version control.
 **/*.tfvars
 
+## include tfvars for examples directory for end user to refer
+!examples/**/*.tfvars
+
 credentials.json
 
 # tf lock file

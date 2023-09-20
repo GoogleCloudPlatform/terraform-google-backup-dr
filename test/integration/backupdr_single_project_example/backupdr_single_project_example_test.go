@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package complete_example
+package single_project_example
 
 import (
 	"fmt"
@@ -23,17 +23,17 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBackupDRNewNetwork(t *testing.T) {
-	applianceNewNetwork := tft.NewTFBlueprintTest(t)
+func TestBackupSingleProjectExample(t *testing.T) {
+	testBackupSingleProjectExample := tft.NewTFBlueprintTest(t)
 
 	const (
 		instanceNamePrefix = "backup-recovery-appliance"
 		zone               = "us-central1-a"
 	)
-	applianceNewNetwork.DefineVerify(func(assert *assert.Assertions) {
-		applianceNewNetwork.DefaultVerify(assert)
+	testBackupSingleProjectExample.DefineVerify(func(assert *assert.Assertions) {
+		testBackupSingleProjectExample.DefaultVerify(assert)
 
-		projectID := applianceNewNetwork.GetStringOutput("project_id")
+		projectID := testBackupSingleProjectExample.GetStringOutput("project_id")
 
 		instances := gcloud.Run(t, fmt.Sprintf("compute instances list --project %s --filter name~%s", projectID, instanceNamePrefix))
 
@@ -46,5 +46,5 @@ func TestBackupDRNewNetwork(t *testing.T) {
 		}
 
 	})
-	applianceNewNetwork.Test()
+	testBackupSingleProjectExample.Test()
 }

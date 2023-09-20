@@ -1,7 +1,7 @@
 # common vars
-project = "gcp-project-id"
-region  = "us-central1"
-zone    = "us-central1-a"
+#project_id = "gcp-project-id"
+region = "us-central1"
+zone   = "us-central1-a"
 
 ## network vars
 network     = "custom-network"
@@ -16,8 +16,6 @@ mc_peering_mode = "PRIVATE_SERVICE_ACCESS"
 ## appliance vars
 appliances = {
   "backup-recovery-appliance001" = {
-    vpc_host_project_id       = "gcp-project-id"
-    ba_project_id             = "gcp-project-id"
     region                    = "us-central1"
     zone                      = "us-central1-a"
     ba_registration           = true
@@ -26,8 +24,6 @@ appliances = {
     assign_roles_to_ba_sa     = true
   },
   "backup-recovery-appliance002" = {
-    vpc_host_project_id       = "gcp-project-id"
-    ba_project_id             = "gcp-project-id"
     region                    = "us-central1"
     zone                      = "us-central1-a"
     ba_registration           = true
