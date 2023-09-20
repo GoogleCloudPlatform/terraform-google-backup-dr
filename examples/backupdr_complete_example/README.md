@@ -30,7 +30,7 @@
 | mc\_peering\_mode | specify peering mode for management server | `string` | `"PRIVATE_SERVICE_ACCESS"` | no |
 | mc\_type | provide management server type | `string` | `"BACKUP_RESTORE"` | no |
 | network | n/a | `string` | `"custom-network"` | no |
-| project | n/a | `string` | n/a | yes |
+| project\_id | n/a | `string` | n/a | yes |
 | region | n/a | `string` | n/a | yes |
 | subnet | n/a | `string` | `"custom-network"` | no |
 | subnet\_cidr | n/a | `string` | `"10.20.0.0/16"` | no |
