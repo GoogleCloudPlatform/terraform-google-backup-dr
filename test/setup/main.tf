@@ -31,6 +31,7 @@ module "project" {
     "cloudkms.googleapis.com",
     "iam.googleapis.com",
     "logging.googleapis.com",
-    "servicenetworking.googleapis.com"
+    "servicenetworking.googleapis.com",
+    "serviceusage.googleapis.com"
   ]
 }
