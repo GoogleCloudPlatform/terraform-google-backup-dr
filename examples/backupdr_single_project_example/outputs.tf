@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-module "project" {
-  source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.0"
-
-  name              = "ci-backup-dr"
-  random_project_id = "true"
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
-
-  activate_apis = [
-    "backupdr.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "compute.googleapis.com",
-    "cloudkms.googleapis.com",
-    "iam.googleapis.com",
-    "logging.googleapis.com",
-    "servicenetworking.googleapis.com"
-  ]
+output "ms_console" {
+  value = google_backup_dr_management_server.server.management_uri[0].web_ui
 }
+
+output "appliances" {
+  value = module.appliances
+}
+
