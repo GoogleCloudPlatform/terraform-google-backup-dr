@@ -25,4 +25,3 @@ output "ms_console" {
 output "appliances" {
   value = module.appliances
 }
-

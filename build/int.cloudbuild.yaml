@@ -30,9 +30,6 @@ steps:
 - id: simple-example-verify
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestBackupSingleProjectExample --stage verify --verbose']
-- id: simple-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestBackupSingleProjectExample --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
