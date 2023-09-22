@@ -24,20 +24,28 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "backup_dr_appliance" {
-  source  = "terraform-google-modules/backup-dr/google"
-  version = "~> 0.1"
+  source  = "GoogleCloudPlatform/backup-dr/google//"
+  version = "0.1.0"
 
+  ba_project_id = "gcp-project-01"
+  region        = "us-central1"
+  zone          = "us-central1-a"
+
+  vpc_host_project_id = "gcp-project-01"
+  network             = "custom-network"
+  subnet              = "custom-network"
+
+  management_server_endpoint = "https://bmc-123455676-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
+  ba_name                    = "backup-recovery-appliance"
+  ba_appliance_type          = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
+  create_ba_service_account  = true
   assign_roles_to_ba_sa      = true
-  ba_prefix                  = var.ba_name
-  management_server_endpoint = var.mgmt_api
-  create_serviceaccount      = true
-  host_project_id            = var.project
-  network                    = var.network
-  project_id                 = var.project
-  region                     = var.region
-  subnet                     = var.subnet
-  zone                       = var.zone
-  require_registration       = true
+  ba_registration            = true
+  firewall_source_ip_ranges  = ["10.128.64.0/20"]
+  network_tags               = []
+  labels                     = {
+    managed-by = "terraform"
+  }
 }
 ```
 
