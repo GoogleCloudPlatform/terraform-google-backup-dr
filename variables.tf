@@ -36,8 +36,8 @@ variable "firewall_source_ip_ranges" {
 }
 
 variable "ba_registration" {
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
   description = "Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered."
 }
 
@@ -68,7 +68,7 @@ variable "management_server_endpoint" {
 
 variable "boot_image" {
   type        = string
-  default     = "projects/backupdr-images/global/images/sky-11-0-10-417"
+  default     = "projects/backupdr-images/global/images/sky-11-0-10-425"
   description = "Provide the boot image for backup/recovery appliance.  Don’t modify this variable to update or upgrade the appliance version. You can upgrade the appliance only through the Backup and DR Service management console."
 }
 
