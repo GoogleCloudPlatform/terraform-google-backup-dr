@@ -36,8 +36,8 @@ variable "firewall_source_ip_ranges" {
 }
 
 variable "ba_registration" {
-  type        = string
-  default     = "true"
+  type        = bool
+  default     = true
   description = "Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered."
 }
 
