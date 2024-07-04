@@ -61,6 +61,7 @@ resource "google_compute_subnetwork" "subnet" {
 
 module "appliances" {
   for_each = try(var.appliances, {})
+
   source   = "GoogleCloudPlatform/backup-dr/google"
   version  = "~> 0.1"
 
