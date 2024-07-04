@@ -17,6 +17,7 @@
 ## create backupdr backup/recovery appliance
 module "multiple_appliances" {
   for_each = try(var.appliances, {})
+
   source   = "GoogleCloudPlatform/backup-dr/google"
   version  = "~> 0.1"
 
