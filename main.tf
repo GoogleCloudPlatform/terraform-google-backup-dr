@@ -205,6 +205,7 @@ resource "google_compute_instance" "appliance" {
   }
   name = local.ba_randomised_name
   network_interface {
+    network            = var.network
     subnetwork         = data.google_compute_subnetwork.ba_subnet.name
     subnetwork_project = var.vpc_host_project_id
   }
