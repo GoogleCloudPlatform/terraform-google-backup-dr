@@ -280,6 +280,8 @@ data "http" "actifio_register" {
   request_body = jsonencode({
     "ipaddress"     = google_compute_instance.appliance.network_interface[0].network_ip
     "shared_secret" = local.shared_secret
+    "deployBaWithoutPsa" = true
+    "serviceaccount" = "serviceAccount:${local.ba_service_account}"
   })
 
   retry {
