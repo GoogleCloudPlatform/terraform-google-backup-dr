@@ -18,7 +18,7 @@
 resource "random_string" "id" {
   length  = 4
   upper   = false
-  special = false 
+  special = false
 }
 
 resource "time_static" "activation_date" {}
