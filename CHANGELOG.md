@@ -8,6 +8,23 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.2.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.1.1...v0.2.0) (2024-08-19)
+
+
+### Features
+
+* **deps:** Update Terraform google to v5 ([#25](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/25)) ([9688db8](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/9688db879a1f58edd792f87e221df1e6f00d3060))
+* Update BA Image version ([#43](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/43)) ([e0d45d8](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/e0d45d88c221814ccb53f6529ba625d8c4abcd26))
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform http ([#20](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/20)) ([1a92934](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/1a9293460a01daa67f029ce12b70ccf2229a9c1f))
+* **deps:** Update Terraform random ([#23](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/23)) ([592bd6b](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/592bd6b6012b041197d86cb48839ac14455e6e3c))
+* **deps:** Update Terraform time ([#24](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/24)) ([cd10f86](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/cd10f866948858e5501cf0aece92c5306f08f230))
+* fix terraform fmt issues ([#36](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/36)) ([cf87fc5](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/cf87fc5b8e76a0fe4ad54ef396cad890138c49c7))
+* Update CODEOWNERS ([#39](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/39)) ([c47b476](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/c47b4768a3c336fa65fdcfb88ad9a9d24b4185cf))
+
 ## [0.1.1](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.1.0...v0.1.1) (2023-09-22)
 
 
