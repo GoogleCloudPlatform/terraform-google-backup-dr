@@ -68,7 +68,7 @@ variable "management_server_endpoint" {
 
 variable "boot_image" {
   type        = string
-  default     = "projects/backupdr-images/global/images/sky-11-0-12-320"
+  default     = "projects/backupdr-images/global/images/sky-11-0-13-278"
   description = "Provide the boot image for backup/recovery appliance.  Don’t modify this variable to update or upgrade the appliance version. You can upgrade the appliance only through the Backup and DR Service management console."
 }
 
