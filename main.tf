@@ -265,10 +265,10 @@ data "http" "fetch_ivp_urls" {
 
 locals {
   response_data_list_management_servers = jsondecode(data.http.fetch_ivp_urls.response_body)
-  hasBAProxyUris = can(local.response_data_list_management_servers.managementServers[0].baProxyUri)
-  ivp_url_string_1 = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[0] : null
-  ivp_url_string_2 = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[1] : null
-  ivp_urls_string = local.hasBAProxyUris ? join(",", [local.ivp_url_string_1, local.ivp_url_string_2]) : null
+  hasBAProxyUris                        = can(local.response_data_list_management_servers.managementServers[0].baProxyUri)
+  ivp_url_string_1                      = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[0] : null
+  ivp_url_string_2                      = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[1] : null
+  ivp_urls_string                       = local.hasBAProxyUris ? join(",", [local.ivp_url_string_1, local.ivp_url_string_2]) : null
 }
 
 data "http" "actifio_session" {
@@ -300,8 +300,8 @@ data "http" "actifio_register" {
   }
 
   request_body = jsonencode({
-    "ipaddress"     = google_compute_instance.appliance.network_interface[0].network_ip
-    "shared_secret" = local.shared_secret
+    "ipaddress"          = google_compute_instance.appliance.network_interface[0].network_ip
+    "shared_secret"      = local.shared_secret
     "deployBaWithoutPsa" = local.hasBAProxyUris ? true : false
     "serviceaccount"     = "${local.ba_service_account}"
   })
