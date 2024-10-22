@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# some of the resource does not support destory so create unit id for name_prefix
+# some of the resource does not support destroy so create unit id for name_prefix
 resource "random_string" "id" {
   length  = 4
   upper   = false
@@ -88,7 +88,7 @@ resource "google_service_account" "ba_service_account" {
   depends_on   = [google_project_service.enable_services]
 }
 
-# Assign the required permssions for BA Appliance service account.
+# Assign the required permissions for BA Appliance service account.
 resource "google_project_iam_member" "ba_service_account_roles" {
   project    = var.ba_project_id
   for_each   = var.assign_roles_to_ba_sa ? toset(local.ba_roles) : []
@@ -98,7 +98,7 @@ resource "google_project_iam_member" "ba_service_account_roles" {
 }
 
 
-# give BA service account permissions to access OnVault ba_vault_metdata
+# give BA service account permissions to access OnVault ba_vault_metadata
 resource "google_project_iam_member" "ba_service_vault_role" {
   project = var.ba_project_id
   count   = var.assign_roles_to_ba_sa ? 1 : 0
@@ -202,6 +202,7 @@ resource "google_compute_instance" "appliance" {
     kms_keyringname         = google_kms_key_ring.ba_keyring.name
     bootstrap_secret        = local.shared_secret
     bucket_prefix           = local.ba_randomised_name
+    agm_instance_ivp_urls   = local.ivp_urls_string
   }
   name = local.ba_randomised_name
   network_interface {
@@ -223,11 +224,11 @@ resource "google_compute_instance" "appliance" {
   }
   labels     = var.labels
   tags       = var.network_tags
-  depends_on = [google_project_service.enable_services, google_service_account.ba_service_account]
+  depends_on = [google_project_service.enable_services, google_service_account.ba_service_account, data.http.fetch_ivp_urls]
 
 }
 
-# create firewall for the MC to communicate with BA applaince.
+# create firewall for the MC to communicate with BA appliance.
 resource "google_compute_firewall" "ba_firewall_rule" {
   project = var.vpc_host_project_id
   count   = length(var.firewall_source_ip_ranges) > 0 ? 1 : 0
@@ -244,9 +245,30 @@ resource "google_compute_firewall" "ba_firewall_rule" {
   depends_on              = [google_compute_instance.appliance]
 }
 
+
 ### register BA appliance to management_server_endpoint
 data "google_client_config" "default" {
   count = var.ba_registration ? 1 : 0
+}
+
+data "google_client_config" "fetch_ivp_urls" {
+}
+
+# call list management server. If baProxyUri exists then fetch the ivp urls for non psa deployments
+data "http" "fetch_ivp_urls" {
+  url    = "https://backupdr.googleapis.com/v1/projects/${var.ms_project_id}/locations/-/managementServers"
+  method = "GET"
+  request_headers = {
+    Authorization = "Bearer ${data.google_client_config.fetch_ivp_urls.access_token}"
+  }
+}
+
+locals {
+  response_data_list_management_servers = jsondecode(data.http.fetch_ivp_urls.response_body)
+  hasBAProxyUris = can(local.response_data_list_management_servers.managementServers[0].baProxyUri)
+  ivp_url_string_1 = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[0] : null
+  ivp_url_string_2 = local.hasBAProxyUris ? local.response_data_list_management_servers.managementServers[0].baProxyUri[1] : null
+  ivp_urls_string = local.hasBAProxyUris ? join(",", [local.ivp_url_string_1, local.ivp_url_string_2]) : null
 }
 
 data "http" "actifio_session" {
@@ -280,6 +302,8 @@ data "http" "actifio_register" {
   request_body = jsonencode({
     "ipaddress"     = google_compute_instance.appliance.network_interface[0].network_ip
     "shared_secret" = local.shared_secret
+    "deployBaWithoutPsa" = local.hasBAProxyUris ? true : false
+    "serviceaccount"     = "${local.ba_service_account}"
   })
 
   retry {
@@ -288,5 +312,5 @@ data "http" "actifio_register" {
     max_delay_ms = 180000
   }
 
-  depends_on = [data.http.actifio_session]
+  depends_on = [data.http.actifio_session, data.http.fetch_ivp_urls]
 }

@@ -24,6 +24,7 @@ module "multiple_appliances" {
   vpc_host_project_id = each.value.vpc_host_project_id
   network             = each.value.network
   ba_project_id       = each.value.ba_project_id
+  ms_project_id       = each.value.ba_project_id
   region              = each.value.region
   subnet              = each.value.subnet
   zone                = each.value.zone
