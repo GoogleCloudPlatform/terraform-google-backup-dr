@@ -303,7 +303,7 @@ data "http" "actifio_register" {
     "ipaddress"          = google_compute_instance.appliance.network_interface[0].network_ip
     "shared_secret"      = local.shared_secret
     "deployBaWithoutPsa" = local.hasBAProxyUris ? true : false
-    "serviceaccount"     = local.ba_service_account
+    "serviceaccount"     = "${local.ba_service_account}"
   })
 
   retry {
