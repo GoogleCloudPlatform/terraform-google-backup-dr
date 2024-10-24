@@ -24,6 +24,11 @@ variable "vpc_host_project_id" {
   description = "Provide the VPC host project ID. In case of a non-shared (dedicated) VPC, this will be the  same as the backup/recovery appliance project ID. In case of shared VPC, this will be the project ID of the host VPC project."
 }
 
+variable "ms_project_id" {
+  type        = string
+  description = "Provide the project ID where you want the management server resides in."
+}
+
 variable "ba_name" {
   type        = string
   description = "Provide a name for the backup/recovery appliance. The name will be suffixed with four random characters."

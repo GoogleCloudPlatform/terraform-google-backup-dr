@@ -23,6 +23,7 @@ variable "appliances" {
     region                     = optional(string)
     zone                       = optional(string)
     ba_project_id              = optional(string)
+    ms_project_id              = optional(string)
     ba_registration            = optional(bool)
     ba_appliance_type          = string
     ba_service_account         = optional(string)
