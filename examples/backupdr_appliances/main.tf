@@ -18,13 +18,12 @@
 module "multiple_appliances" {
   for_each = try(var.appliances, {})
 
-  source   = "GoogleCloudPlatform/backup-dr/google"
-  version  = "~> 0.1"
+  source = "ankushpareddy/backup-dr/google"
 
   vpc_host_project_id = each.value.vpc_host_project_id
   network             = each.value.network
   ba_project_id       = each.value.ba_project_id
-  ms_project_id       = each.value.ba_project_id
+  ms_project_id       = each.value.ms_project_id
   region              = each.value.region
   subnet              = each.value.subnet
   zone                = each.value.zone
