@@ -49,3 +49,7 @@ credentials.json
 
 # tf lock file
 .terraform.lock.hcl
+.terrform.lock
+
+#ide files
+.idea/**

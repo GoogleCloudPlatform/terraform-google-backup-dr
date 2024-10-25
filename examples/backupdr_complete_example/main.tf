@@ -62,8 +62,7 @@ resource "google_compute_subnetwork" "subnet" {
 module "appliances" {
   for_each = try(var.appliances, {})
 
-  source     = "GoogleCloudPlatform/backup-dr/google"
-  version    = "~> 0.1"
+  source = "../../"
 
   create_ba_service_account  = each.value.create_ba_service_account
   assign_roles_to_ba_sa      = each.value.assign_roles_to_ba_sa
@@ -72,6 +71,7 @@ module "appliances" {
   management_server_endpoint = google_backup_dr_management_server.server.management_uri[0].api
   vpc_host_project_id        = each.value.vpc_host_project_id
   ba_project_id              = each.value.ba_project_id
+  ms_project_id              = each.value.ms_project_id
   network                    = google_compute_network.network.name
   region                     = each.value.region
   subnet                     = google_compute_subnetwork.subnet.name

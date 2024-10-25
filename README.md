@@ -68,6 +68,7 @@ Functional examples are included in the
 | firewall\_source\_ip\_ranges | Provide the IP ranges to allow the firewall communication between the management console, the appliance, and other subnets where workloads need to be backed up. | `list(string)` | `[]` | no |
 | labels | A set of key-value label pairs to be assigned to the deployed backup/recovery appliance. | `map(string)` | `{}` | no |
 | management\_server\_endpoint | Provide a management console endpoint URL. For example, https://bmc-xxxx-dot-us-central1.backupdr.googleusercontent.com/actifio | `string` | n/a | yes |
+| ms\_project\_id | Provide the project ID where you want the management server resides in. | `string` | n/a | yes |
 | network | Provide a network which the appliance will be part of. | `string` | n/a | yes |
 | network\_tags | Provide the network tags for backup/recovery appliance VM. These tags allow you to apply firewall rules and routes to a specific instance or set of instances. | `list(string)` | `[]` | no |
 | region | Provide a region where you want to deploy a backup/recovery appliance. | `string` | n/a | yes |
