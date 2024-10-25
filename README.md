@@ -25,7 +25,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "backup_dr_appliance" {
   source  = "GoogleCloudPlatform/backup-dr/google//"
-  version = "0.1.0"
+  version = "0.2.0"
 
   ba_project_id = "gcp-project-01"
   region        = "us-central1"
@@ -35,6 +35,7 @@ module "backup_dr_appliance" {
   network             = "custom-network"
   subnet              = "custom-network"
 
+  ms_project_id              = "gcp-project-01"
   management_server_endpoint = "https://bmc-123455676-xxxxxxxx-dot-us-central1.backupdr.googleusercontent.com/actifio"
   ba_name                    = "backup-recovery-appliance"
   ba_appliance_type          = "STANDARD_FOR_COMPUTE_ENGINE_VMS"
