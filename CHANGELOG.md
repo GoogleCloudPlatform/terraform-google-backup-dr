@@ -8,6 +8,18 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.3.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.2.0...v0.3.0) (2024-11-06)
+
+
+### Features
+
+* **deps:** Update Terraform google to v6 ([#45](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/45)) ([80844d3](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/80844d37a86ae243ab50ba2d5fd74109e66f1849))
+
+
+### Bug Fixes
+
+* update versions.tf to allow latest MS version ([#52](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/52)) ([b41b37c](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/b41b37c5b4528a5bc6c3f98fbd2677ef2fb59438))
+
 ## [0.2.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.1.1...v0.2.0) (2024-10-25)
 
 
