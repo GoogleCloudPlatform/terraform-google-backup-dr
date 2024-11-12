@@ -83,7 +83,7 @@ resource "google_project_service" "enable_services" {
 resource "google_service_account" "ba_service_account" {
   project      = var.ba_project_id
   count        = var.create_ba_service_account ? 1 : 0
-  account_id   = var.ba_name
+  account_id   = local.ba_randomised_name
   display_name = "Backup DR Appliance Service Account"
   depends_on   = [google_project_service.enable_services]
 }
