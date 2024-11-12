@@ -101,7 +101,7 @@ variable "assign_roles_to_ba_sa" {
 
 variable "ba_service_account" {
   type        = string
-  description = "Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create_ba_service_account variable is set to true."
+  description = "Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create_ba_service_account variable is set to true. A unique service account should be used for each new BA deployment else deployment will fail."
   default     = "none"
 }
 
