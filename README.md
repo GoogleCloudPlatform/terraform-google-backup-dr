@@ -63,7 +63,7 @@ Functional examples are included in the
 | ba\_name | Provide a name for the backup/recovery appliance. The name will be suffixed with four random characters. | `string` | n/a | yes |
 | ba\_project\_id | Provide the project ID where you want to deploy the backup/recovery appliance. | `string` | n/a | yes |
 | ba\_registration | Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered. | `string` | `"true"` | no |
-| ba\_service\_account | Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create\_ba\_service\_account variable is set to true. | `string` | `"none"` | no |
+| ba\_service\_account | Use this if you want to use an existing service account with the backup/recovery appliance. This variable will be ignored if the create\_ba\_service\_account variable is set to true. A unique service account should be used for each new BA deployment else deployment will fail. | `string` | `"none"` | no |
 | boot\_image | Provide the boot image for backup/recovery appliance.  Don’t modify this variable to update or upgrade the appliance version. You can upgrade the appliance only through the Backup and DR Service management console. | `string` | `"projects/backupdr-images/global/images/sky-11-0-13-278"` | no |
 | create\_ba\_service\_account | Flag to create a service account for backup/recovery appliance. | `bool` | n/a | yes |
 | firewall\_source\_ip\_ranges | Provide the IP ranges to allow the firewall communication between the management console, the appliance, and other subnets where workloads need to be backed up. | `list(string)` | `[]` | no |
