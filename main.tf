@@ -54,6 +54,7 @@ locals {
   shared_secret       = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
   ba_service_account  = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
   ba_randomised_name  = join("-", tolist([var.ba_name, random_string.id.id]))
+  ba_sa_randomised_name = join("-", [length(var.ba_name) + length(random_string.id.id) > 30 ? substr(var.ba_name, 0, 30 - length(random_string.id.id) - 1) : var.ba_name, random_string.id.id])
 }
 
 # make sure the subnet exist.
@@ -83,7 +84,7 @@ resource "google_project_service" "enable_services" {
 resource "google_service_account" "ba_service_account" {
   project      = var.ba_project_id
   count        = var.create_ba_service_account ? 1 : 0
-  account_id   = local.ba_randomised_name
+  account_id   = local.ba_sa_randomised_name
   display_name = "Backup DR Appliance Service Account"
   depends_on   = [google_project_service.enable_services]
 }
