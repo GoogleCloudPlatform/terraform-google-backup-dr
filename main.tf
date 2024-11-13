@@ -50,10 +50,10 @@ locals {
 }
 
 locals {
-  timestamp_sanitized = sum([time_static.activation_date.unix, 86400])
-  shared_secret       = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
-  ba_service_account  = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
-  ba_randomised_name  = join("-", tolist([var.ba_name, random_string.id.id]))
+  timestamp_sanitized   = sum([time_static.activation_date.unix, 86400])
+  shared_secret         = "${random_string.shared_secret.result}00000000${format("%x", local.timestamp_sanitized)}"
+  ba_service_account    = var.create_ba_service_account ? join("", google_service_account.ba_service_account[*].email) : var.ba_service_account
+  ba_randomised_name    = join("-", tolist([var.ba_name, random_string.id.id]))
   ba_sa_randomised_name = join("-", [length(var.ba_name) + length(random_string.id.id) > 30 ? substr(var.ba_name, 0, 30 - length(random_string.id.id) - 1) : var.ba_name, random_string.id.id])
 }
 
