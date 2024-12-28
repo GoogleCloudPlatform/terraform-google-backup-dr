@@ -8,6 +8,15 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.4.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.3.0...v0.4.0) (2024-12-28)
+
+
+### Features
+
+* Update CODEOWNERS ([#53](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/53)) ([4fd49fb](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/4fd49fb46732a3cbce028762921104a905d28a51))
+* Update CODEOWNERS ([#53](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/53)) ([dba4762](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/dba4762c0a4a84041ccb180fc95d04e73ea2d637))
+* Update script to have unique service account name generated ([#56](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/56)) ([f791d95](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/f791d9522ca9950b54c7a19613f005a4719a258b))
+
 ## [0.3.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.2.0...v0.3.0) (2024-11-06)
 
 
