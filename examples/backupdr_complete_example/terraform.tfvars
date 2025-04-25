@@ -11,7 +11,6 @@ subnet_cidr = "10.20.0.0/16"
 ## MC vars
 mc_name         = "ms-console-custom"
 mc_type         = "BACKUP_RESTORE"
-mc_peering_mode = "PRIVATE_SERVICE_ACCESS"
 
 ## appliance vars
 appliances = {
