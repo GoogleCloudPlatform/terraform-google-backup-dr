@@ -2,13 +2,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.80.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.10.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ba_appliance"></a> [ba\_appliance](#module\_ba\_appliance) | ../../ | n/a |
+| <a name="module_ba_appliance"></a> [ba\_appliance](#module\_ba\_appliance) | GoogleCloudPlatform/backup-dr/google/ | 0.3.0 |
 
 ## Resources
 
