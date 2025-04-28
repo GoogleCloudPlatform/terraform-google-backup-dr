@@ -58,7 +58,7 @@ resource "google_compute_subnetwork" "subnet" {
 module "appliances" {
   for_each = try(var.appliances, {})
 
-  source = "GoogleCloudPlatform/backup-dr/google/"
+  source = "GoogleCloudPlatform/backup-dr/google"
   version = "0.3.0"
 
   create_ba_service_account  = each.value.create_ba_service_account
