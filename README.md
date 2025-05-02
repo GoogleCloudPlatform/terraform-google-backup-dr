@@ -25,6 +25,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "backup_dr_appliance" {
   source  = "GoogleCloudPlatform/backup-dr/google"
+  version = "0.3.0"
 
   ba_project_id = "gcp-project-01"
   region        = "us-central1"
