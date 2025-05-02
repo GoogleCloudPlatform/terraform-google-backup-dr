@@ -8,7 +8,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ba_appliance"></a> [ba\_appliance](#module\_ba\_appliance) | GoogleCloudPlatform/backup-dr/google | n/a |
+| <a name="module_ba_appliance"></a> [ba\_appliance](#module\_ba\_appliance) | ../../ | n/a |
 
 ## Resources
 

@@ -18,7 +18,7 @@
 module "multiple_appliances" {
   for_each = try(var.appliances, {})
 
-  source = "GoogleCloudPlatform/backup-dr/google"
+  source = "../../"
 
   vpc_host_project_id = each.value.vpc_host_project_id
   network             = each.value.network
