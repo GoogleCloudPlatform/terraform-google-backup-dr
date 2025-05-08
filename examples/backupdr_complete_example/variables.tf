@@ -37,13 +37,6 @@ variable "subnet_cidr" {
   default = "10.20.0.0/16"
 }
 
-
-variable "mc_peering_mode" {
-  type        = string
-  description = "specify peering mode for management server"
-  default     = "PRIVATE_SERVICE_ACCESS"
-}
-
 variable "mc_name" {
   type        = string
   description = "provide management server name"
