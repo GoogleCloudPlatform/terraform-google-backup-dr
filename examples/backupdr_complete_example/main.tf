@@ -42,10 +42,6 @@ resource "google_backup_dr_management_server" "server" {
 
   name = var.mc_name
   type = var.mc_type
-  networks {
-    network      = google_compute_network.network.id
-    peering_mode = var.mc_peering_mode
-  }
   depends_on = [google_service_networking_connection.default]
 }
 
