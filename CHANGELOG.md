@@ -8,6 +8,13 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.5.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.4.0...v0.5.0) (2025-08-22)
+
+
+### Features
+
+* Q2'25 image update ([#79](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/79)) ([4efc5ce](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/4efc5ce192d503ff33980e4621f7c09dc9efb86c))
+
 ## [0.4.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.3.0...v0.4.0) (2025-05-28)
 
 
