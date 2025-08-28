@@ -25,7 +25,14 @@ Basic usage of this module is as follows:
 ```hcl
 module "backup_dr_appliance" {
   source  = "GoogleCloudPlatform/backup-dr/google//"
-  version = "0.4.0"
+
+  # MODULE VERSIONING:
+  # The 'version' attribute locks the module to a specific release. New module versions are released periodically.
+  # Find available versions on:
+  # - Terraform Registry: https://registry.terraform.io/modules/GoogleCloudPlatform/backup-dr/google
+  # - GitHub Releases: https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/releases
+  # Consider using a version constraint, e.g., version = "~> 0.5"
+  version = "0.5.0"
 
   ba_project_id = "gcp-project-01"
   region        = "us-central1"
