@@ -107,9 +107,9 @@ variable "ba_service_account" {
 
 variable "ba_appliance_type" {
   type        = string
-  description = "Specify appliance type that you want to deploy. Supported appliance types are: [ \"STANDARD_FOR_COMPUTE_ENGINE_VMS\" , \"STANDARD_FOR_DATABASES_VMWARE_VMS\" ]"
+  description = "Specify appliance type that you want to deploy. Supported appliance types are: [ \"STANDARD_FOR_COMPUTE_ENGINE_VMS\" , \"STANDARD_FOR_DATABASES_VMWARE_VMS\", \"BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL\" , \"BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD\" , \"BASIC_FOR_DATABASES_VMWARE_VMS_SSD\" ]"
   validation {
-    condition     = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS"], var.ba_appliance_type)
-    error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, STANDARD_FOR_DATABASES_VMWARE_VMS."
+    condition     = contains(["STANDARD_FOR_COMPUTE_ENGINE_VMS", "STANDARD_FOR_DATABASES_VMWARE_VMS", "BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL", "BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD", "BASIC_FOR_DATABASES_VMWARE_VMS_SSD"], var.ba_appliance_type)
+    error_message = "Valid value is one of the following: STANDARD_FOR_COMPUTE_ENGINE_VMS, STANDARD_FOR_DATABASES_VMWARE_VMS, BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL, BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD, BASIC_FOR_DATABASES_VMWARE_VMS_SSD."
   }
 }
