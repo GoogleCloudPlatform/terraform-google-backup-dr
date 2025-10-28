@@ -59,7 +59,7 @@ Functional examples are included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | assign\_roles\_to\_ba\_sa | Flag to assign the necessary roles to the backup/recovery appliance service account. | `bool` | n/a | yes |
-| ba\_appliance\_type | Specify appliance type that you want to deploy. Supported appliance types are: [ "STANDARD\_FOR\_COMPUTE\_ENGINE\_VMS" , "STANDARD\_FOR\_DATABASES\_VMWARE\_VMS" ] | `string` | n/a | yes |
+| ba\_appliance\_type | Specify appliance type that you want to deploy. Supported appliance types are: [ "STANDARD\_FOR\_COMPUTE\_ENGINE\_VMS" , "STANDARD\_FOR\_DATABASES\_VMWARE\_VMS", "BASIC\_FOR\_DATABASES\_VMWARE\_VMS\_MINIMAL" , "BASIC\_FOR\_DATABASES\_VMWARE\_VMS\_STANDARD" , "BASIC\_FOR\_DATABASES\_VMWARE\_VMS\_SSD" ] | `string` | n/a | yes |
 | ba\_name | Provide a name for the backup/recovery appliance. The name will be suffixed with four random characters. | `string` | n/a | yes |
 | ba\_project\_id | Provide the project ID where you want to deploy the backup/recovery appliance. | `string` | n/a | yes |
 | ba\_registration | Flag to register the backup/recovery appliance with the management console. We recommend changing it to false, once the appliance is successfully registered. | `string` | `"true"` | no |
