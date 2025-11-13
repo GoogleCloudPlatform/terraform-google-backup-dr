@@ -45,6 +45,27 @@ locals {
       snap_pool_disk_size    = "4096"
       primary_pool_disk_size = "200"
       machine_type           = "n2-standard-16"
+    },
+    BASIC_FOR_DATABASES_VMWARE_VMS_MINIMAL = {
+      boot_disk_type         = "pd-standard"
+      boot_disk_size         = "200"
+      snap_pool_disk_size    = "10"
+      primary_pool_disk_size = "200"
+      machine_type           = "e2-standard-16"
+    },
+    BASIC_FOR_DATABASES_VMWARE_VMS_STANDARD = {
+      boot_disk_type         = "pd-standard"
+      boot_disk_size         = "200"
+      snap_pool_disk_size    = "4096"
+      primary_pool_disk_size = "200"
+      machine_type           = "e2-standard-16"
+    },
+    BASIC_FOR_DATABASES_VMWARE_VMS_SSD = {
+      boot_disk_type         = "pd-ssd"
+      boot_disk_size         = "200"
+      snap_pool_disk_size    = "4096"
+      primary_pool_disk_size = "200"
+      machine_type           = "e2-standard-16"
     }
   }
 }
