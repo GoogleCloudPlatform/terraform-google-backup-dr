@@ -8,6 +8,15 @@ and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 This changelog is generated automatically based on [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.6.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.5.0...v0.6.0) (2026-01-28)
+
+
+### Features
+
+* **appliance:** Add support for appliance type BASIC_FOR_DATABASES_VMS_* ([#87](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/87)) ([42b5da9](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/42b5da933c8ffb0873a94a0df39c600af02c357d))
+* **deps:** Update Terraform Google Provider to v7 (major) ([#82](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/82)) ([9782ca3](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/9782ca331380cb502176d1e3df99c68ec0b27933))
+* Q3'25 image update ([#90](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/issues/90)) ([5f9dc38](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/commit/5f9dc38d1b6be35a2db388d077db67d50fb76f49))
+
 ## [0.5.0](https://github.com/GoogleCloudPlatform/terraform-google-backup-dr/compare/v0.4.0...v0.5.0) (2025-08-22)
 
 
