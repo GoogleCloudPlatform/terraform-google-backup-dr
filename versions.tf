@@ -40,6 +40,6 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-backup-dr/v0.5.0"
+    module_name = "blueprints/terraform/terraform-google-backup-dr/v0.6.0"
   }
 }
